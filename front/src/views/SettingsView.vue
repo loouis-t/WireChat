@@ -75,7 +75,7 @@ function saveSettings() {
 <style scoped>
 .settings-container {
   width: 55vw;
-  height: 70vh;
+  height: 75vh;
   background-color: #1e1e1e;
   border-radius: 8px;
   padding: 20px;
