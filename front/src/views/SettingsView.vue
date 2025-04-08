@@ -7,21 +7,11 @@
     <form @submit.prevent="saveSettings" class="settings-form">
       <div class="form-group">
         <label for="ipv6">IPv6</label>
-        <input
-          id="ipv6"
-          type="text"
-          v-model="settings.ipv6"
-          placeholder="Ex : fe80::1"
-        />
+        <input id="ipv6" type="text" v-model="settings.ipv6" placeholder="Ex : fe80::1" />
       </div>
       <div class="form-group">
         <label for="port">Port</label>
-        <input
-          id="port"
-          type="number"
-          v-model.number="settings.port"
-          placeholder="Ex : 51820"
-        />
+        <input id="port" type="number" v-model.number="settings.port" placeholder="Ex : 51820" />
       </div>
       <div class="form-group">
         <label for="privateKey">Clé Privée</label>
@@ -52,12 +42,7 @@
       </div>
       <div class="form-group">
         <label for="email">Email</label>
-        <input
-          id="email"
-          type="email"
-          v-model="settings.email"
-          placeholder="Votre email"
-        />
+        <input id="email" type="email" v-model="settings.email" placeholder="Votre email" />
       </div>
       <div class="form-group">
         <button type="submit">Enregistrer</button>
@@ -76,7 +61,7 @@ const settings = reactive({
   privateKey: '',
   publicKey: '',
   username: '',
-  email: ''
+  email: '',
 })
 
 // Fonction de sauvegarde des paramètres

@@ -11,7 +11,7 @@
 
     <!-- Zone des messages -->
     <div ref="messagesContainer" class="messages">
-      <MessageBubble v-for="(msg) in conversation.messages" :key="msg.id" :message="msg" />
+      <MessageBubble v-for="msg in conversation.messages" :key="msg.id" :message="msg" />
     </div>
 
     <!-- Champ de saisie pour envoyer un nouveau message -->
@@ -20,7 +20,7 @@
 </template>
 
 <script setup>
-import { defineProps, defineEmits, ref, onUpdated } from 'vue'
+import { onUpdated, ref } from 'vue'
 import MessageBubble from './MessageBubble.vue'
 import ChatInput from './ChatInput.vue'
 
@@ -71,7 +71,7 @@ onUpdated(() => {
 .new-conversation-btn {
   background-color: transparent;
   border: none;
-  color: #0a84ff;
+  color: #a52121;
   cursor: pointer;
   font-size: 0.9rem;
 }
