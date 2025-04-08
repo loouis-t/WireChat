@@ -3,29 +3,37 @@ import { RouterLink, RouterView } from 'vue-router'
 </script>
 
 <template>
-  <header>
-    <img alt="WG logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />
+  <div class="wrapper">
+    <header>
+      <img alt="WG logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />
 
-    <div class="wrapper">
-      <nav>
-        <RouterLink to="/">Chat</RouterLink>
-        <RouterLink to="/settings">Settings</RouterLink>
-      </nav>
-    </div>
-  </header>
-
-  <RouterView />
+        <nav>
+          <RouterLink to="/">Chat</RouterLink>
+          <RouterLink to="/settings">Settings</RouterLink>
+        </nav>
+    </header>
+    <RouterView />
+  </div>
 </template>
 
 <style scoped>
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+  height: 100vh;
+  width: 100%;
+}
 header {
   line-height: 1.5;
-  max-height: 100vh;
+  height: 8vh;
+  margin-bottom: 4vh;
 }
 
 .logo {
   display: block;
-  margin: 0 auto 2rem;
+  margin: 2rem;
 }
 
 nav {
@@ -36,7 +44,7 @@ nav {
 }
 
 nav a.router-link-exact-active {
-  color: var(--color-text);
+  color: #7d2320;
 }
 
 nav a.router-link-exact-active:hover {
@@ -57,7 +65,8 @@ nav a:first-of-type {
   header {
     display: flex;
     place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
+    justify-content: space-between;
+    align-items: center;
   }
 
   .logo {
@@ -66,13 +75,11 @@ nav a:first-of-type {
 
   header .wrapper {
     display: flex;
-    place-items: flex-start;
     flex-wrap: wrap;
   }
 
   nav {
     text-align: left;
-    margin-left: -1rem;
     font-size: 1rem;
 
     padding: 1rem 0;
