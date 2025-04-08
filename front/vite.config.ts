@@ -15,4 +15,14 @@ export default defineConfig({
       '@': fileURLToPath(new URL('./src', import.meta.url))
     },
   },
+  build: {
+    // Tell Vite (and esbuild) to target modern JavaScript environments.
+    target: 'esnext'
+  },
+  optimizeDeps: {
+    esbuildOptions: {
+      // Ensure dependencies are also built with a modern target.
+      target: 'esnext'
+    }
+  }
 })
