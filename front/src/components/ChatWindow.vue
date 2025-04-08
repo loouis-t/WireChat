@@ -1,20 +1,16 @@
-<!-- ChatWindow.vue -->
 <template>
   <div class="chat-window">
-    <!-- En-tête de la conversation avec bouton "Nouvelle conversation" -->
     <div class="chat-header">
       <span>{{ conversation.name }}</span>
       <button class="new-conversation-btn" @click="$emit('newConversation')">
-        Nouvelle conversation
+        <i class="fa-solid fa-plus" style="color: #ffffff;"></i>
       </button>
     </div>
 
-    <!-- Zone des messages -->
     <div ref="messagesContainer" class="messages">
       <MessageBubble v-for="msg in conversation.messages" :key="msg.id" :message="msg" />
     </div>
 
-    <!-- Champ de saisie pour envoyer un nouveau message -->
     <ChatInput @sendMessage="handleSendMessage" />
   </div>
 </template>
@@ -25,21 +21,18 @@ import MessageBubble from './MessageBubble.vue'
 import ChatInput from './ChatInput.vue'
 
 const props = defineProps({
-  conversation: Object, // La conversation sélectionnée (avec { id, name, messages[] })
+  conversation: Object,
 })
 const emit = defineEmits(['sendMessage', 'newConversation'])
 
-// Référence à la div des messages pour gérer le défilement automatique
 const messagesContainer = ref(null)
 
-// Émettre l'événement d'envoi de message vers le parent, avec l'ID conv et le texte
 function handleSendMessage(messageText) {
   if (props.conversation) {
     emit('sendMessage', { conversationId: props.conversation.id, text: messageText })
   }
 }
 
-// Scroll automatique vers le bas quand de nouveaux messages sont ajoutés
 onUpdated(() => {
   if (messagesContainer.value) {
     messagesContainer.value.scrollTop = messagesContainer.value.scrollHeight
@@ -71,7 +64,7 @@ onUpdated(() => {
 .new-conversation-btn {
   background-color: transparent;
   border: none;
-  color: #a52121;
+  color: #88171A;
   cursor: pointer;
   font-size: 0.9rem;
 }

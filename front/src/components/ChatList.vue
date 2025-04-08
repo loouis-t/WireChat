@@ -1,4 +1,3 @@
-<!-- ChatList.vue -->
 <template>
   <div class="chat-list">
     <div
@@ -19,21 +18,17 @@
 
 <script setup>
 const props = defineProps({
-  conversations: Array, // Liste des conversations à afficher
-  selectedConversationId: [String, Number], // ID de la conversation active
+  conversations: Array,
+  selectedConversationId: [String, Number],
 })
-// Ce composant émettra un événement 'selectConversation' (pas de code supplémentaire requis grâce à $emit dans le template).
 </script>
 
 <style scoped>
 .chat-list {
   width: 500px;
-  /* largeur de la liste */
   background-color: #212121;
-  /* fond sombre pour la liste */
   overflow-y: auto;
   border-right: 1px solid #2f2f2f;
-  /* ligne de séparation */
   border-top-left-radius: 8px;
   border-bottom-left-radius: 8px;
 }
@@ -50,7 +45,6 @@ const props = defineProps({
 
 .conversation-item.active {
   background-color: #333333;
-  /* fond légèrement plus clair pour la conv active */
 }
 
 .conversation-line {
@@ -75,6 +69,5 @@ const props = defineProps({
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  /* tronquer si trop long */
 }
 </style>
