@@ -120,7 +120,7 @@ function closeNewConversation() {
 <style scoped>
 .app-container {
   display: flex;
-  height: 90vh;
+  height: 70vh;
   width: 55vw;
   background-color: #181818;
   color: #eaeaea;

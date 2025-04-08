@@ -1,23 +1,21 @@
 @import './base.css';
 
 #app {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
+  width: 100%;
   font-weight: normal;
 }
 
 a,
 .green {
   text-decoration: none;
-  color: #7d2320;
+  color: var(--color-text);
   transition: 0.4s;
   padding: 3px;
 }
 
 @media (hover: hover) {
   a:hover {
-    background-color: hsla(160, 100%, 37%, 0.2);
+    background-color: hsla(0, 100%, 37%, 0.2);
   }
 }
 
@@ -25,11 +23,15 @@ a,
   body {
     display: flex;
     place-items: center;
+    width: 100%;
   }
 
   #app {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     padding: 0 2rem;
+    width: 100%;
   }
 }
