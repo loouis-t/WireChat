@@ -1,4 +1,3 @@
-<!-- ChatInput.vue -->
 <template>
   <form class="chat-input" @submit.prevent="send">
     <input v-model="messageText" type="text" placeholder="Écrire un message..." />
@@ -12,13 +11,12 @@ import { ref } from 'vue'
 const emit = defineEmits(['sendMessage'])
 const messageText = ref('')
 
-// Fonction d'envoi du message
 function send() {
   const text = messageText.value.trim()
   if (text !== '') {
     emit('sendMessage', text)
-    messageText.value = '' // on réinitialise le champ après envoi
   }
+  messageText.value = ''
 }
 </script>
 
@@ -45,7 +43,7 @@ function send() {
 
 .chat-input button {
   padding: 8px 16px;
-  background-color: #7d2320;
+  background-color: #88171A;
   border: none;
   border-radius: 18px;
   color: #fff;
