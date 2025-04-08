@@ -1,8 +1,8 @@
 <!-- SettingsView.vue -->
 <template>
-  <div class="settings-container">
-    <div class="settings-header">
-      <h2>Paramètres WireGuard</h2>
+  <div class="settings-container" style="min-height: 700px">
+    <div class="settings-header" style="margin-bottom: 40px">
+      <h2>Paramètres</h2>
     </div>
     <form @submit.prevent="saveSettings" class="settings-form">
       <div class="form-group">
@@ -44,7 +44,7 @@
         <label for="email">Email</label>
         <input id="email" type="email" v-model="settings.email" placeholder="Votre email" />
       </div>
-      <div class="form-group">
+      <div class="form-group" style="margin-top: 40px">
         <button type="submit">Enregistrer</button>
       </div>
     </form>
