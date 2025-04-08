@@ -8,12 +8,7 @@ import { RouterLink, RouterView } from 'vue-router'
       <img alt="WG logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />
       <nav style="display: flex">
         <RouterLink to="/">Chat</RouterLink>
-        <RouterLink to="/settings"
-          >Paramètres<i
-            class="fa-solid fa-gear"
-            style="background-color: #ff0000; min-height: 24px; min-width: 24px"
-          ></i
-        ></RouterLink>
+        <RouterLink to="/settings">Paramètres<i class="fa-solid fa-user" style="margin-left: 5px;"></i></RouterLink>
       </nav>
     </header>
     <RouterView />
