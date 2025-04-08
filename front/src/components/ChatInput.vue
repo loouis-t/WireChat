@@ -7,7 +7,7 @@
 </template>
 
 <script setup>
-import { ref, defineEmits } from 'vue'
+import { ref } from 'vue'
 
 const emit = defineEmits(['sendMessage'])
 const messageText = ref('')
@@ -32,6 +32,7 @@ function send() {
   border-top: 1px solid #2a2a2a;
   border-bottom-right-radius: 8px;
 }
+
 .chat-input input {
   flex: 1;
   padding: 8px 12px;
@@ -41,6 +42,7 @@ function send() {
   border-radius: 20px;
   color: #eaeaea;
 }
+
 .chat-input button {
   padding: 8px 16px;
   background-color: #7d2320;
@@ -50,6 +52,7 @@ function send() {
   cursor: pointer;
   font-weight: bold;
 }
+
 .chat-input button:hover {
   background-color: #701916;
 }

@@ -21,7 +21,7 @@
 </template>
 
 <script setup>
-import { ref, defineEmits } from 'vue'
+import { ref } from 'vue'
 
 const contactInfo = ref('')
 const emit = defineEmits(['createConversation', 'cancel'])
