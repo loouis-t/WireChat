@@ -28,10 +28,12 @@ onBeforeUnmount(() => {
     <header>
       <img alt="WG logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />
       <nav>
-        <RouterLink to="/">Chat</RouterLink>
-        <RouterLink to="/settings"
-          >Paramètres<i class="fa-solid fa-user" style="margin-left: 8px"></i
+        <RouterLink to="/"
+          >Chat<i class="fa-solid fa-comments" style="margin-left: 8px"></i
         ></RouterLink>
+        <RouterLink to="/settings"
+          >Paramètres <img class="gear" src="./assets/gear_edited.png"
+        /></RouterLink>
       </nav>
       <!-- Bouton burger, affiché seulement en mode mobile -->
       <button v-if="isMobile" class="burger-btn" @click="toggleMobileMenu">
@@ -53,6 +55,18 @@ onBeforeUnmount(() => {
 </template>
 
 <style scoped>
+.gear {
+  color: #7d2320;
+  height: 18px;
+  margin-bottom: -4px;
+  margin-left: 5px;
+}
+
+.logo {
+  display: block;
+  margin: 2rem;
+}
+
 .wrapper {
   display: flex;
   flex-direction: column;
@@ -61,6 +75,7 @@ onBeforeUnmount(() => {
   height: 100vh;
   width: 100%;
 }
+
 header {
   display: flex;
   justify-content: space-between;
@@ -102,15 +117,15 @@ nav a:first-of-type {
 }
 
 @media (min-width: 1024px) {
+  .logo {
+    margin: 0 2rem 0 0;
+  }
+
   header {
     display: flex;
     place-items: center;
     justify-content: space-between;
     align-items: center;
-  }
-
-  .logo {
-    margin: 0 2rem 0 0;
   }
 
   header .wrapper {
