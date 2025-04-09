@@ -7,12 +7,7 @@
       <div class="first-container">
         <div class="input-group">
           <label for="configFile">Importer une configuration WireGuard</label>
-          <input
-            id="configFile"
-            type="file"
-            @change="handleFileUpload"
-            accept=".conf,.txt"
-          />
+          <input id="configFile" type="file" @change="handleFileUpload" accept=".conf,.txt" />
         </div>
 
         <div class="or-separator">OU</div>
@@ -183,7 +178,7 @@ function closeScanner() {
   font-size: 1rem;
   cursor: pointer;
   transition: background-color 0.2s ease;
-  background-color: #88171A;
+  background-color: #88171a;
   color: #fff;
 }
 
@@ -224,7 +219,7 @@ function closeScanner() {
 
 .create-btn,
 .cancel-btn {
-  background-color: #88171A;
+  background-color: #88171a;
   color: #fff;
 }
 

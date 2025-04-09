@@ -43,7 +43,7 @@ function send() {
 
 .chat-input button {
   padding: 8px 16px;
-  background-color: #88171A;
+  background-color: #88171a;
   border: none;
   border-radius: 18px;
   color: #fff;
