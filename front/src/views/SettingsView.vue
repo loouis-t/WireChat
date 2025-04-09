@@ -134,4 +134,16 @@ function saveSettings() {
 .settings-form button:hover {
   background-color: #5a0000;
 }
+
+@media (max-width: 768px) {
+  .settings-container {
+    width: 90vw;
+    height: auto;
+    padding: 10px;
+  }
+
+  .settings-form {
+    width: 100%;
+  }
+}
 </style>

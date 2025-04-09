@@ -3,7 +3,7 @@
     <div class="chat-header">
       <span>{{ conversation.name }}</span>
       <button class="new-conversation-btn" @click="$emit('newConversation')">
-        <i class="fa-solid fa-plus" style="color: #ffffff;"></i>
+        <i class="fa-solid fa-plus" style="color: #ffffff"></i>
       </button>
     </div>
 
@@ -64,7 +64,7 @@ onUpdated(() => {
 .new-conversation-btn {
   background-color: transparent;
   border: none;
-  color: #88171A;
+  color: #88171a;
   cursor: pointer;
   font-size: 0.9rem;
 }

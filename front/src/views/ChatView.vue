@@ -1,10 +1,12 @@
 <template>
   <div class="app-container">
-    <ChatList
-      :conversations="conversations"
-      :selectedConversationId="selectedConversationId"
-      @selectConversation="selectConversation"
-    />
+    <div class="left-pane">
+      <ChatList
+        :conversations="conversations"
+        :selectedConversationId="selectedConversationId"
+        @selectConversation="selectConversation"
+      />
+    </div>
 
     <div class="right-pane">
       <NewConversation
@@ -131,4 +133,22 @@ function closeNewConversation() {
   color: #999;
   font-style: italic;
 }
+
+@media (max-width: 768px) {
+  .app-container {
+    width: 100%;
+    height: 80%;
+    flex-direction: column;
+  }
+
+  .right-pane {
+    width: 100%;
+    height: 100%;
+    border-radius: 0;
+  }
+
+  .left-pane {
+    display: none;
+  }
+} 
 </style>

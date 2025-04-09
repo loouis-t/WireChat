@@ -21,7 +21,7 @@ const props = defineProps({
 
 .message-bubble.mine {
   align-self: flex-end;
-  background-color: #88171A;
+  background-color: #88171a;
   color: #ffffff;
 }
 
