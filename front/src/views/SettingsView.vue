@@ -1,7 +1,6 @@
-<!-- SettingsView.vue -->
 <template>
-  <div class="settings-container" style="min-height: 700px">
-    <div class="settings-header" style="margin-bottom: 40px">
+  <div class="settings-container">
+    <div class="settings-header">
       <h2>Paramètres</h2>
     </div>
     <form @submit.prevent="saveSettings" class="settings-form">
@@ -14,7 +13,7 @@
         <input id="port" type="number" v-model.number="settings.port" placeholder="Ex : 51820" />
       </div>
       <div class="form-group">
-        <label for="privateKey">Clé Privée</label>
+        <label for="privateKey">Clé privée</label>
         <input
           id="privateKey"
           type="text"
@@ -23,7 +22,7 @@
         />
       </div>
       <div class="form-group">
-        <label for="publicKey">Clé Publique</label>
+        <label for="publicKey">Clé publique</label>
         <input
           id="publicKey"
           type="text"
@@ -32,12 +31,12 @@
         />
       </div>
       <div class="form-group">
-        <label for="username">Nom / Prénom ou Pseudo</label>
+        <label for="username">Nom d'utilisateur</label>
         <input
           id="username"
           type="text"
           v-model="settings.username"
-          placeholder="Votre nom ou pseudo"
+          placeholder="Votre nom d'utilisateur"
         />
       </div>
       <div class="form-group">
@@ -74,18 +73,17 @@ function saveSettings() {
 
 <style scoped>
 .settings-container {
-  width: 35vw;
-  height: 75vh;
   background-color: #1e1e1e;
   border-radius: 8px;
-  padding: 20px;
   color: #eaeaea;
-  font-family: Arial, sans-serif;
+  height: 75vh;
+  padding: 20px;
+  width: 35vw;
 }
 
 .settings-header {
+  margin-bottom: 40px;
   text-align: center;
-  margin-bottom: 20px;
 }
 
 .settings-form .form-group {

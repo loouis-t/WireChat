@@ -31,8 +31,11 @@ onBeforeUnmount(() => {
         <RouterLink to="/"
           >Chat<i class="fa-solid fa-comments" style="margin-left: 8px"></i
         ></RouterLink>
+        <RouterLink to="/profile"
+          >Profil<i class="fa-solid fa-user" style="margin-left: 8px"></i
+        ></RouterLink>
         <RouterLink to="/settings"
-          >Paramètres <img class="gear" src="./assets/gear.webp"
+          >Paramètres<img class="gear" src="./assets/gear.webp"
         /></RouterLink>
       </nav>
       <!-- Bouton burger, affiché seulement en mode mobile -->
@@ -44,10 +47,15 @@ onBeforeUnmount(() => {
     <!-- Menu mobile en overlay -->
     <div v-if="isMobile && showMobileMenu" class="mobile-menu">
       <button class="close-menu" @click="toggleMobileMenu">×</button>
-      <RouterLink @click="toggleMobileMenu" to="/">Chat</RouterLink>
-      <RouterLink @click="toggleMobileMenu" to="/settings">
-        Paramètres <i class="fa-solid fa-user" style="margin-left: 8px"></i>
-      </RouterLink>
+      <RouterLink @click="toggleMobileMenu" to="/"
+        >Chat<i class="fa-solid fa-comments" style="margin-left: 8px"></i
+      ></RouterLink>
+      <RouterLink @click="toggleMobileMenu" to="/profile"
+        >Profil<i class="fa-solid fa-user" style="margin-left: 8px"></i
+      ></RouterLink>
+      <RouterLink @click="toggleMobileMenu" to="/settings"
+        >Paramètres<img class="phoneGear" src="./assets/gear.webp"
+      /></RouterLink>
     </div>
 
     <RouterView />
@@ -57,6 +65,13 @@ onBeforeUnmount(() => {
 <style scoped>
 .gear {
   height: 18px;
+  margin-bottom: -4px;
+  margin-left: 5px;
+  filter: invert(1);
+}
+
+.phoneGear {
+  height: 24px;
   margin-bottom: -4px;
   margin-left: 5px;
   filter: invert(1);
@@ -87,7 +102,6 @@ header {
 
 nav {
   display: flex;
-  gap: 1rem;
   font-size: 1rem;
 }
 
