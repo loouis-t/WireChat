@@ -32,7 +32,7 @@ onBeforeUnmount(() => {
           >Chat<i class="fa-solid fa-comments" style="margin-left: 8px"></i
         ></RouterLink>
         <RouterLink to="/settings"
-          >Paramètres <img class="gear" src="./assets/gear_edited.png"
+          >Paramètres <img class="gear" src="./assets/gear.webp"
         /></RouterLink>
       </nav>
       <!-- Bouton burger, affiché seulement en mode mobile -->
@@ -56,15 +56,10 @@ onBeforeUnmount(() => {
 
 <style scoped>
 .gear {
-  color: #7d2320;
   height: 18px;
   margin-bottom: -4px;
   margin-left: 5px;
-}
-
-.logo {
-  display: block;
-  margin: 2rem;
+  filter: invert(1);
 }
 
 .wrapper {
@@ -98,6 +93,11 @@ nav {
 
 nav a.router-link-exact-active {
   color: #7d2320;
+}
+
+nav a.router-link-exact-active .gear {
+  content: url('./assets/gear_edited.png');
+  filter: invert(0);
 }
 
 nav a.router-link-exact-active:hover {
