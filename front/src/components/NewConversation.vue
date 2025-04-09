@@ -204,6 +204,7 @@ function closeScanner() {
 .buttons {
   display: flex;
   justify-content: space-between;
+  margin-top: 30px;
 }
 
 .create-btn,

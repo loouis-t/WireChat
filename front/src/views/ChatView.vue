@@ -150,5 +150,5 @@ function closeNewConversation() {
   .left-pane {
     display: none;
   }
-} 
+}
 </style>
