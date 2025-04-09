@@ -74,7 +74,7 @@ function saveSettings() {
 
 <style scoped>
 .settings-container {
-  width: 55vw;
+  width: 35vw;
   height: 75vh;
   background-color: #1e1e1e;
   border-radius: 8px;
@@ -107,6 +107,12 @@ function saveSettings() {
   background-color: #2b2b2b;
   color: #f5f5f5;
   font-size: 1rem;
+}
+
+.settings-form input:focus {
+  border: none;
+  outline: none;
+  background-color: #3b3b3b;
 }
 
 .settings-form input::placeholder {
