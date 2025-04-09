@@ -109,7 +109,6 @@ nav a {
   padding: 0 1rem;
   border-left: 1px solid var(--color-border);
   color: #ffffff;
-
 }
 
 nav a:first-of-type {
@@ -178,7 +177,7 @@ nav a:first-of-type {
     height: 30px;
     filter: invert(1);
   }
-  
+
   .mobile-menu {
     position: fixed;
     top: 0;
