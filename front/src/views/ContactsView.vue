@@ -20,7 +20,7 @@
             <td class="celluleTableau">SkorFire</td>
             <td class="celluleBoutonsOptions celluleTableau">
               <div>
-                <RouterLink to="/profile">
+                <RouterLink to="/settings">
                   <button class="boutonsOptions"><i class="fa-solid fa-user icones"></i></button
                 ></RouterLink>
                 <RouterLink to="/"
@@ -35,7 +35,7 @@
             <td class="celluleTableau">Deniz Koyu</td>
             <td class="celluleBoutonsOptions celluleTableau">
               <div>
-                <RouterLink to="/profile">
+                <RouterLink to="/settings">
                   <button class="boutonsOptions"><i class="fa-solid fa-user icones"></i></button
                 ></RouterLink>
                 <RouterLink to="/"
@@ -50,7 +50,7 @@
             <td class="celluleTableau">Tony Tony Chopper</td>
             <td class="celluleBoutonsOptions celluleTableau">
               <div>
-                <RouterLink to="/profile">
+                <RouterLink to="/settings">
                   <button class="boutonsOptions"><i class="fa-solid fa-user icones"></i></button
                 ></RouterLink>
                 <RouterLink to="/"
