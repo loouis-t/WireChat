@@ -4,6 +4,7 @@ import ChatView from '@/views/ChatView.vue'
 import ContactsView from '@/views/ContactsView.vue'
 import SettingsView from '@/views/SettingsView.vue'
 import ShareView from '@/views/ShareView.vue'
+
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [

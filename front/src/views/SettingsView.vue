@@ -40,7 +40,7 @@ function handleFileUpload(event) {
       <img id="photoProfil" src="../assets/profilePicture.png" />
       <div class="blocImportPhotoProfil input-group">
         <label for="configFile">Importer une photo de profil</label>
-        <input id="configFile" type="file" @change="handleFileUpload" accept=".jpg,.jpeg,.png" />
+        <input type="file" @change="handleFileUpload" accept=".jpg,.jpeg,.png" />
       </div>
     </div>
     <form @submit.prevent="saveProfile" class="profile-form">
@@ -95,7 +95,7 @@ function handleFileUpload(event) {
               />
             </div>
             <div class="form-group">
-              <button type="submit">Enregistrer les paramètres</button>
+              <button id="boutonSubmit" type="submit">Enregistrer les paramètres</button>
             </div>
           </form>
         </div>
@@ -105,6 +105,10 @@ function handleFileUpload(event) {
 </template>
 
 <style>
+#boutonSubmit {
+  margin-top: 40px;
+}
+
 .page-container {
   display: flex;
   flex-direction: column;
@@ -116,6 +120,7 @@ function handleFileUpload(event) {
   background-color: #1e1e1e;
   border-radius: 8px;
   color: #eaeaea;
+  margin-top: 20px;
   padding: 20px;
   width: 35vw;
 }
@@ -181,6 +186,7 @@ function handleFileUpload(event) {
 
 .blocPhotoProfil {
   display: flex;
+  margin-bottom: 20px;
 }
 
 .blocImportPhotoProfil {
@@ -231,19 +237,15 @@ function handleFileUpload(event) {
   resize: none;
 }
 
-#configFile {
-  margin: 0px 0px 0px 50px;
-}
-
 #photoProfil {
   height: 80px;
-  margin-left: 40px;
+  margin: 0px 20px;
 }
 
 .blocImportPhotoProfil {
-  display: inline;
-  text-align: center;
-  vertical-align: middle;
+  display: grid;
+  padding-top: 10px;
+  text-align: left;
   width: 70%;
 }
 
@@ -261,7 +263,7 @@ function handleFileUpload(event) {
 }
 
 .profile-header {
-  margin-bottom: 10px;
+  margin-bottom: 40px;
   text-align: center;
 }
 
