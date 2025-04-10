@@ -54,11 +54,8 @@ function saveProfile() {
   border-radius: 4px;
   color: #f5f5f5;
   font-family: Arial, sans-serif;
-  max-width: 471px;
-  min-width: 471px;
-  max-height: 96px;
-  min-height: 96px;
   padding: 10px;
+  height: 20vh;
   resize: none;
 }
 
@@ -76,6 +73,7 @@ function saveProfile() {
   margin-top: 20px;
   text-align: center;
   vertical-align: middle;
+  width: 70%;
 }
 
 .blocPhotoProfil {
@@ -148,10 +146,22 @@ function saveProfile() {
   .profile-container {
     height: auto;
     padding: 10px;
-    width: 90vw;
+    width: 90%;
   }
 
   .profile-form {
+    width: 100%;
+  }
+
+  .blocImportPhotoProfil {
+    width: 70%;
+    display: block;
+  }
+  #configFile {
+    width: 70%;
+    text-align: left;
+  }
+  #bio {
     width: 100%;
   }
 }

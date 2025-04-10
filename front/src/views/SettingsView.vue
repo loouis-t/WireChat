@@ -67,7 +67,6 @@ const settings = reactive({
 function saveSettings() {
   // Ici, vous pouvez appeler une API pour sauvegarder les paramètres
   console.log('Paramètres enregistrés :', JSON.parse(JSON.stringify(settings)))
-  alert('Paramètres enregistrés !')
 }
 </script>
 
