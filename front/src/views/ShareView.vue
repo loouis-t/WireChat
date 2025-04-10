@@ -50,7 +50,8 @@ const configQRValid = computed(() => configQR.value !== '')
       <pre>{{ configQR }}</pre>
     </div>
     <p v-else class="warning">
-      Veuillez compléter vos paramètres WireGuard (y compris votre pseudo) dans la section Paramètres.
+      Veuillez compléter vos paramètres WireGuard (y compris votre pseudo) dans la section
+      Paramètres.
     </p>
   </div>
 </template>
@@ -65,7 +66,7 @@ const configQRValid = computed(() => configQR.value !== '')
   border-radius: 8px;
   text-align: center;
   display: flex;
-    flex-direction: column;
+  flex-direction: column;
 }
 .share-view h2 {
   margin-bottom: 10px;
@@ -105,5 +106,5 @@ pre {
   .qr-code-container {
     width: 100%;
   }
-}   
+}
 </style>
