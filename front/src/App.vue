@@ -31,31 +31,29 @@ onBeforeUnmount(() => {
         <RouterLink to="/"
           >Chat<i class="fa-solid fa-comments" style="margin-left: 8px"></i
         ></RouterLink>
-        <RouterLink to="/profile"
-          >Profil<i class="fa-solid fa-user" style="margin-left: 8px"></i
-        ></RouterLink>
         <RouterLink to="/settings"
           >Paramètres<img class="gear" src="./assets/gear.webp"
         /></RouterLink>
+        <RouterLink to="/share">
+          Partager<img class="shareIcon" src="./assets/partager.png" />
+        </RouterLink>
       </nav>
-      <!-- Bouton burger, affiché seulement en mode mobile -->
       <button v-if="isMobile" class="burger-btn" @click="toggleMobileMenu">
         <img src="./assets/menu.png" alt="menu" class="burger-icon" />
       </button>
     </header>
 
-    <!-- Menu mobile en overlay -->
     <div v-if="isMobile && showMobileMenu" class="mobile-menu">
       <button class="close-menu" @click="toggleMobileMenu">×</button>
       <RouterLink @click="toggleMobileMenu" to="/"
         >Chat<i class="fa-solid fa-comments" style="margin-left: 8px"></i
       ></RouterLink>
-      <RouterLink @click="toggleMobileMenu" to="/profile"
-        >Profil<i class="fa-solid fa-user" style="margin-left: 8px"></i
-      ></RouterLink>
       <RouterLink @click="toggleMobileMenu" to="/settings"
         >Paramètres<img class="phoneGear" src="./assets/gear.webp"
       /></RouterLink>
+      <RouterLink @click="toggleMobileMenu" to="/share"> 
+        Partager<img class="phoneShare" src="./assets/partager.png" />
+      </RouterLink>
     </div>
 
     <RouterView />
@@ -71,6 +69,20 @@ onBeforeUnmount(() => {
 }
 
 .phoneGear {
+  height: 24px;
+  margin-bottom: -4px;
+  margin-left: 5px;
+  filter: invert(1);
+}
+
+.shareIcon {
+  height: 18px;
+  margin-bottom: -4px;
+  margin-left: 5px;
+  filter: invert(1);
+}
+
+.phoneShare {
   height: 24px;
   margin-bottom: -4px;
   margin-left: 5px;
@@ -111,6 +123,18 @@ nav a.router-link-exact-active {
 
 nav a.router-link-exact-active .gear {
   content: url('./assets/gear_edited.png');
+  filter: invert(0);
+}
+nav a.router-link-exact-active .shareIcon {
+  content: url('./assets/partager_edited.png');
+  filter: invert(0);
+}
+.mobile-menu a.router-link-exact-active .phoneGear {
+  content: url('./assets/gear_edited.png');
+  filter: invert(0);
+}
+.mobile-menu a.router-link-exact-active .phoneShare {
+  content: url('./assets/partager_edited.png');
   filter: invert(0);
 }
 
@@ -155,7 +179,6 @@ nav a:first-of-type {
   }
 }
 
-/* Par défaut, le bouton burger est masqué sur desktop */
 .burger-btn {
   display: none;
   background: none;
