@@ -1,8 +1,9 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import ChatView from '@/views/ChatView.vue'
 import ContactsView from '@/views/ContactsView.vue'
-import ProfileView from '@/views/ProfileView.vue'
-
+import SettingsView from '@/views/SettingsView.vue'
+import ShareView from '@/views/ShareView.vue'
+import ChatList from '@/components/ChatList.vue'
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -17,19 +18,19 @@ const router = createRouter({
       component: ContactsView,
     },
     {
-      path: '/profile',
-      name: 'profile',
-      component: ProfileView,
-    },
-    {
       path: '/settings',
       name: 'settings',
-      component: () => import('../views/SettingsView.vue'),
+      component: SettingsView,
     },
     {
       path: '/share',
       name: 'share',
-      component: () => import('../views/ShareView.vue'),
+      component: ShareView,
+    },
+    {
+      path: '/chatlist',
+      name: 'chatlist',
+      component: ChatList,
     },
   ],
 })
