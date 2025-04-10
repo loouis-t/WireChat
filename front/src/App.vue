@@ -34,9 +34,6 @@ onBeforeUnmount(() => {
         <RouterLink to="/contacts"
           >Contacts<i class="fa-solid fa-address-book" style="margin-left: 8px"></i
         ></RouterLink>
-        <RouterLink to="/profile"
-          >Profil<i class="fa-solid fa-user" style="margin-left: 8px"></i
-        ></RouterLink>
         <RouterLink to="/settings"
           >Paramètres<img class="gear" src="./assets/gear.webp"
         /></RouterLink>
@@ -57,8 +54,8 @@ onBeforeUnmount(() => {
       <RouterLink @click="toggleMobileMenu" to="/contacts"
         >Contacts<i class="fa-solid fa-address-book" style="margin-left: 8px"></i
       ></RouterLink>
-      <RouterLink @click="toggleMobileMenu" to="/profile"
-        >Profil<i class="fa-solid fa-user" style="margin-left: 8px"></i
+      <RouterLink @click="toggleMobileMenu" to="/chatlist"
+        >Chatlist<i class="fa-solid fa-comments" style="margin-left: 8px"></i
       ></RouterLink>
       <RouterLink @click="toggleMobileMenu" to="/settings"
         >Paramètres<img class="phoneGear" src="./assets/gear.webp"
