@@ -111,7 +111,6 @@ function closeNewConversation() {
   width: 70vw;
   background-color: #181818;
   color: #eaeaea;
-  font-family: Arial, sans-serif;
   border-radius: 8px;
 }
 

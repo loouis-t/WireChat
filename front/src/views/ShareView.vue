@@ -38,7 +38,7 @@ const configQRValid = computed(() => configQR.value !== '')
 
 <template>
   <div class="share-view">
-    <h2>Partager votre configuration WireGuard</h2>
+    <h2 id="titrePage">Partager votre configuration WireGuard</h2>
     <p>
       Ce QR code contient vos informations publiques nécessaires à l'établissement d'une connexion.
       Faites-le scanner par votre interlocuteur.
@@ -57,6 +57,10 @@ const configQRValid = computed(() => configQR.value !== '')
 </template>
 
 <style scoped>
+#titrePage {
+  margin-bottom: 40px;
+}
+
 .share-view {
   padding: 20px;
   width: 40%;
@@ -68,17 +72,21 @@ const configQRValid = computed(() => configQR.value !== '')
   display: flex;
   flex-direction: column;
 }
+
 .share-view h2 {
   margin-bottom: 10px;
 }
+
 .share-view p {
   margin-bottom: 20px;
 }
+
 .qr-code-container {
   margin: auto;
   width: 250px;
   height: 250px;
 }
+
 .config-display {
   margin-top: 20px;
   text-align: left;
@@ -86,12 +94,14 @@ const configQRValid = computed(() => configQR.value !== '')
   padding: 10px;
   border-radius: 4px;
 }
+
 pre {
   margin: 0;
   font-family: monospace;
   font-size: 0.9rem;
   color: #f5f5f5;
 }
+
 .warning {
   color: #ffa500;
   font-style: italic;

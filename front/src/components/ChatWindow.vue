@@ -64,7 +64,6 @@ onUpdated(() => {
 .new-conversation-btn {
   background-color: transparent;
   border: none;
-  color: #88171a;
   cursor: pointer;
   font-size: 0.9rem;
 }
