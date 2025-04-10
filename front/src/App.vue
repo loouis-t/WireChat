@@ -63,7 +63,7 @@ onBeforeUnmount(() => {
       <RouterLink @click="toggleMobileMenu" to="/settings"
         >Paramètres<img class="phoneGear" src="./assets/gear.webp"
       /></RouterLink>
-      <RouterLink @click="toggleMobileMenu" to="/share"> 
+      <RouterLink @click="toggleMobileMenu" to="/share">
         Partager<img class="phoneShare" src="./assets/partager.png" />
       </RouterLink>
     </div>
