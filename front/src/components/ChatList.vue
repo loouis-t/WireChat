@@ -39,12 +39,12 @@ const props = defineProps({
   border-bottom: 1px solid #2a2a2a;
 }
 
-.conversation-item:hover {
-  background-color: #2a2a2a;
-}
-
 .conversation-item.active {
   background-color: #333333;
+}
+
+.conversation-item:hover {
+  background-color: #2a2a2a;
 }
 
 .conversation-line {
@@ -58,16 +58,16 @@ const props = defineProps({
   color: #e0e0e0;
 }
 
-.last-time {
-  font-size: 0.85em;
-  color: #aaa;
-}
-
 .last-message {
   font-size: 0.9em;
   color: #cccccc;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.last-time {
+  font-size: 0.85em;
+  color: #aaaaaa;
 }
 </style>

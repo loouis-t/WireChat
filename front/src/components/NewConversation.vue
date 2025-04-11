@@ -7,7 +7,7 @@
       <div class="first-container">
         <div class="input-group">
           <label for="configFile">Importer une configuration WireGuard</label>
-          <input id="configFile" type="file" @change="handleFileUpload" accept=".conf,.txt" />
+          <input type="file" @change="handleFileUpload" accept=".conf,.txt" />
         </div>
 
         <div class="or-separator">OU</div>
@@ -120,17 +120,36 @@ function closeScanner() {
 </script>
 
 <style scoped>
-.new-conversation {
-  width: 100%;
-  height: 100%;
-  background-color: #1e1e1e;
-  padding: 30px;
-  color: #e0e0e0;
+.buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 30px;
 }
 
-.header {
-  text-align: center;
-  margin-bottom: 30px;
+.cancel-btn,
+.create-btn {
+  background-color: #88171a;
+  border: none;
+  border-radius: 8px;
+  color: #ffffff;
+  cursor: pointer;
+  font-size: 1rem;
+  margin-top: 8%;
+  padding: 10px 20px;
+  transition: background-color 0.2s ease;
+}
+
+.cancel-btn:hover,
+.create-btn:hover {
+  background-color: #5a0000;
+}
+
+.close-scanner-btn {
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-top: 8px;
+  padding: 6px 12px;
 }
 
 .form {
@@ -139,15 +158,6 @@ function closeScanner() {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-}
-
-.input-group {
-  margin-bottom: 16px;
-  text-align: left;
-}
-
-.form label {
-  margin-right: 50%;
 }
 
 .form input[type='file'] {
@@ -159,11 +169,33 @@ function closeScanner() {
   margin-top: 2%;
 }
 
+.form label {
+  margin-right: 50%;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.input-group {
+  margin-bottom: 16px;
+  text-align: left;
+}
+
+.new-conversation {
+  width: 100%;
+  height: 100%;
+  background-color: #1e1e1e;
+  padding: 30px;
+  color: #e0e0e0;
+}
+
 .or-separator {
   text-align: center;
   font-size: 0.9rem;
   margin-bottom: 16px;
-  color: #aaa;
+  color: #aaaaaa;
 }
 
 .qr-code-section {
@@ -179,7 +211,7 @@ function closeScanner() {
   cursor: pointer;
   transition: background-color 0.2s ease;
   background-color: #88171a;
-  color: #fff;
+  color: #ffffff;
 }
 
 .qr-scan-btn:hover {
@@ -191,41 +223,5 @@ function closeScanner() {
   height: 280px;
   margin: 8px auto;
   position: relative;
-}
-
-.close-scanner-btn {
-  margin-top: 8px;
-  padding: 6px 12px;
-  border-radius: 8px;
-  border: none;
-  cursor: pointer;
-}
-
-.buttons {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 30px;
-}
-
-.create-btn,
-.cancel-btn {
-  padding: 10px 20px;
-  border: none;
-  border-radius: 8px;
-  font-size: 1rem;
-  cursor: pointer;
-  margin-top: 8%;
-  transition: background-color 0.2s ease;
-}
-
-.create-btn,
-.cancel-btn {
-  background-color: #88171a;
-  color: #fff;
-}
-
-.create-btn:hover,
-.cancel-btn:hover {
-  background-color: #5a0000;
 }
 </style>

@@ -38,13 +38,13 @@ const configQRValid = computed(() => configQR.value !== '')
 
 <template>
   <div class="share-view">
-    <h2 id="titrePage">Partager votre configuration WireGuard</h2>
+    <h2 class="titrePage">Partager votre configuration WireGuard</h2>
     <p>
       Ce QR code contient vos informations publiques nécessaires à l'établissement d'une connexion.
       Faites-le scanner par votre interlocuteur.
     </p>
     <div class="qr-code-container">
-      <qrcode-vue :value="configQR" :size="250" />
+      <qrcode-vue :value="configQR" :size="200" />
     </div>
     <div class="config-display" v-if="configQRValid">
       <pre>{{ configQR }}</pre>
@@ -57,8 +57,16 @@ const configQRValid = computed(() => configQR.value !== '')
 </template>
 
 <style scoped>
-#titrePage {
-  margin-bottom: 40px;
+.config-display {
+  margin-top: 20px;
+  text-align: left;
+  background-color: #2b2b2b;
+  padding: 10px;
+  border-radius: 4px;
+}
+
+.qr-code-container {
+  margin: 40px 0px;
 }
 
 .share-view {
@@ -77,22 +85,13 @@ const configQRValid = computed(() => configQR.value !== '')
   margin-bottom: 10px;
 }
 
-.share-view p {
-  margin-bottom: 20px;
+.titrePage {
+  margin-bottom: 40px;
 }
 
-.qr-code-container {
-  margin: auto;
-  width: 250px;
-  height: 250px;
-}
-
-.config-display {
-  margin-top: 20px;
-  text-align: left;
-  background-color: #2b2b2b;
-  padding: 10px;
-  border-radius: 4px;
+.warning {
+  color: #ffa500;
+  font-style: italic;
 }
 
 pre {
@@ -102,19 +101,15 @@ pre {
   color: #f5f5f5;
 }
 
-.warning {
-  color: #ffa500;
-  font-style: italic;
-}
-
 @media (max-width: 768px) {
+  .qr-code-container {
+    width: 100%;
+  }
+
   .share-view {
     width: 90%;
     height: 75vh;
     padding: 10px;
-  }
-  .qr-code-container {
-    width: 100%;
   }
 }
 </style>

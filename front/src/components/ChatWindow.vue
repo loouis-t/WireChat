@@ -3,7 +3,7 @@
     <div class="chat-header">
       <span>{{ conversation.name }}</span>
       <button class="new-conversation-btn" @click="$emit('newConversation')">
-        <i class="fa-solid fa-plus" style="color: #ffffff"></i>
+        <i class="boutonNouvelleConversation fa-solid fa-plus"></i>
       </button>
     </div>
 
@@ -41,12 +41,8 @@ onUpdated(() => {
 </script>
 
 <style scoped>
-.chat-window {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  width: 100%;
-  background-color: #181818;
+.boutonNouvelleConversation {
+  color: #ffffff;
 }
 
 .chat-header {
@@ -61,6 +57,22 @@ onUpdated(() => {
   border-top-right-radius: 8px;
 }
 
+.chat-window {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+  background-color: #181818;
+}
+
+.messages {
+  flex: 1;
+  padding: 16px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
 .new-conversation-btn {
   background-color: transparent;
   border: none;
@@ -70,13 +82,5 @@ onUpdated(() => {
 
 .new-conversation-btn:hover {
   text-decoration: underline;
-}
-
-.messages {
-  flex: 1;
-  padding: 16px;
-  overflow-y: auto;
-  display: flex;
-  flex-direction: column;
 }
 </style>
