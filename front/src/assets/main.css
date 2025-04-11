@@ -1,6 +1,6 @@
 @import './base.css';
 
-#app {
+.app {
   width: 100%;
   font-weight: normal;
 }
@@ -20,18 +20,18 @@ a,
 }
 
 @media (min-width: 1024px) {
-  body {
-    display: flex;
-    place-items: center;
-    width: 100%;
-  }
-
-  #app {
+  .app {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     padding: 0 2rem;
+    width: 100%;
+  }
+
+  body {
+    display: flex;
+    place-items: center;
     width: 100%;
   }
 }

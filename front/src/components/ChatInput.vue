@@ -21,6 +21,20 @@ function send() {
 </script>
 
 <style scoped>
+.chat-input button {
+  padding: 8px 16px;
+  background-color: #88171a;
+  border: none;
+  border-radius: 18px;
+  color: #ffffff;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.chat-input button:hover {
+  background-color: #701916;
+}
+
 .chat-input {
   display: flex;
   align-items: center;
@@ -39,19 +53,5 @@ function send() {
   border: none;
   border-radius: 20px;
   color: #eaeaea;
-}
-
-.chat-input button {
-  padding: 8px 16px;
-  background-color: #88171a;
-  border: none;
-  border-radius: 18px;
-  color: #fff;
-  cursor: pointer;
-  font-weight: bold;
-}
-
-.chat-input button:hover {
-  background-color: #701916;
 }
 </style>

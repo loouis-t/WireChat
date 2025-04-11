@@ -148,14 +148,9 @@
 </template>
 
 <style scoped>
-.table {
-  width: 100%;
-  height: 100%;
-}
-
 .boutonsOptions {
-  background-color: #7d2320;
-  border-color: #7d2320;
+  background-color: #88171a;
+  border-color: #88171a;
   border-radius: 8px;
   border-style: none;
   color: #ffffff;
@@ -163,13 +158,14 @@
   text-align: center;
   vertical-align: middle;
   width: 38px;
-  margin: 0 5px;
+  margin: 0px 3px;
   transition: background-color 0.2s ease;
 }
 
 .boutonsOptions:hover {
   background-color: #a52a2a;
   border-color: #a52a2a;
+  cursor: pointer;
 }
 
 .celluleBoutonsOptions {
@@ -192,6 +188,11 @@
 
 .photosProfil {
   height: 48px;
+}
+
+.table {
+  width: 100%;
+  height: 100%;
 }
 
 a {

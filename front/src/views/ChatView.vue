@@ -114,6 +114,15 @@ function closeNewConversation() {
   border-radius: 8px;
 }
 
+.no-conversation {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #999999;
+  font-style: italic;
+}
+
 .right-pane {
   flex: 1;
   display: flex;
@@ -124,15 +133,6 @@ function closeNewConversation() {
   border-bottom-right-radius: 8px;
 }
 
-.no-conversation {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #999;
-  font-style: italic;
-}
-
 @media (max-width: 768px) {
   .app-container {
     width: 100%;
@@ -140,14 +140,14 @@ function closeNewConversation() {
     flex-direction: column;
   }
 
+  .left-pane {
+    display: none;
+  }
+
   .right-pane {
     width: 100%;
     height: 100%;
     border-radius: 0;
-  }
-
-  .left-pane {
-    display: none;
   }
 }
 </style>
