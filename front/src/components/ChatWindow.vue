@@ -54,7 +54,6 @@ onUpdated(() => {
   border-bottom: 1px solid #2a2a2a;
   font-weight: bold;
   color: #e0e0e0;
-  border-top-right-radius: 8px;
 }
 
 .chat-window {

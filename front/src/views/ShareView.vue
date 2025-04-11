@@ -71,7 +71,7 @@ const configQRValid = computed(() => configQR.value !== '')
 
 .share-view {
   padding: 20px;
-  width: 40%;
+  width: 35vw;
   height: 75vh;
   background-color: #1e1e1e;
   color: #eaeaea;

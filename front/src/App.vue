@@ -205,6 +205,7 @@ nav a.router-link-exact-active:hover {
 @media (max-width: 768px) {
   .burger-btn {
     border: none;
+    background-color: transparent;
     display: block;
     filter: invert(1);
   }
