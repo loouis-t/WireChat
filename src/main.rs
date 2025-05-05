@@ -2,7 +2,7 @@ mod wireguard_mod;
 mod api;
 mod database;
 
-use database::{db_setup, peer};
+use database::{db_setup, peer, message};
 use wireguard_mod::WireGuardMultiChat;
 use dotenv::dotenv;
 use std::env;
