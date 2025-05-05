@@ -52,9 +52,6 @@ onBeforeUnmount(() => {
       <RouterLink @click="toggleMobileMenu" to="/contacts"
         >Contacts<i class="fa-solid fa-address-book" style="margin-left: 8px"></i
       ></RouterLink>
-      <RouterLink @click="toggleMobileMenu" to="/chatlist"
-        >Chatlist<i class="fa-solid fa-comments" style="margin-left: 8px"></i
-      ></RouterLink>
       <RouterLink @click="toggleMobileMenu" to="/settings"
         >Paramètres<img class="phoneGear" src="./assets/gear.webp"
       /></RouterLink>

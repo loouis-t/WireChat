@@ -1,14 +1,24 @@
 <template>
-  <div class="app-container">
-    <div class="left-pane">
+  <div
+    class="app-container"
+    :class="{ mobile: isMobile }"
+    @touchstart="handleTouchStart"
+    @touchend="handleTouchEnd"
+  >
+    <!-- Liste des conversations -->
+    <div v-if="!isMobile || (isMobile && !inConversationView)" class="left-pane">
+      <h2 class="titrePage">Conversations</h2>
       <ChatList
         :conversations="conversations"
         :selectedConversationId="selectedConversationId"
-        @selectConversation="selectConversation"
+        @selectConversation="handleSelectConversation"
       />
     </div>
 
-    <div class="right-pane">
+    <!-- Conversation sélectionnée -->
+    <div v-if="!isMobile || (isMobile && inConversationView)" class="right-pane">
+      <button v-if="isMobile" class="back-button" @click="backToList">← Retour</button>
+
       <NewConversation
         v-if="showNewConversation"
         @createConversation="createConversation"
@@ -28,7 +38,7 @@
 </template>
 
 <script setup>
-import { reactive, ref, computed } from 'vue'
+import { reactive, ref, computed, onMounted, onBeforeUnmount } from 'vue'
 import ChatList from '../components/ChatList.vue'
 import ChatWindow from '../components/ChatWindow.vue'
 import NewConversation from '../components/NewConversation.vue'
@@ -56,15 +66,36 @@ const conversations = reactive([
   },
 ])
 
-const selectedConversationId = ref(conversations[0].id)
+const selectedConversationId = ref(null)
 const activeConversation = computed(() =>
   conversations.find((conv) => conv.id === selectedConversationId.value),
 )
-
 const showNewConversation = ref(false)
+const isMobile = ref(window.innerWidth <= 768)
+const inConversationView = ref(false)
+let touchStartX = 0
+let touchEndX = 0
 
-function selectConversation(id) {
+function handleResize() {
+  isMobile.value = window.innerWidth <= 768
+  if (!isMobile.value) inConversationView.value = false
+}
+
+onMounted(() => {
+  window.addEventListener('resize', handleResize)
+})
+
+onBeforeUnmount(() => {
+  window.removeEventListener('resize', handleResize)
+})
+
+function handleSelectConversation(id) {
   selectedConversationId.value = id
+  if (isMobile.value) inConversationView.value = true
+}
+
+function backToList() {
+  inConversationView.value = false
 }
 
 function sendMessage({ conversationId, text }) {
@@ -93,61 +124,83 @@ function createConversation(contactInfo) {
     lastTime: '',
   }
   conversations.push(newConv)
-
   selectedConversationId.value = newConv.id
-
   showNewConversation.value = false
+  inConversationView.value = true
 }
 
 function closeNewConversation() {
   showNewConversation.value = false
 }
+
+function handleTouchStart(e) {
+  touchStartX = e.changedTouches[0].screenX
+}
+
+function handleTouchEnd(e) {
+  touchEndX = e.changedTouches[0].screenX
+  handleSwipeGesture()
+}
+
+function handleSwipeGesture() {
+  if (!isMobile.value) return
+  const diff = touchStartX - touchEndX
+  if (Math.abs(diff) > 50) {
+    if (diff > 0 && !inConversationView.value && selectedConversationId.value !== null) {
+      inConversationView.value = true
+    } else if (diff < 0 && inConversationView.value) {
+      inConversationView.value = false
+    }
+  }
+}
 </script>
 
 <style scoped>
 .app-container {
+  background-color: #1e1e1e;
+  border-radius: 8px;
+  color: #eaeaea;
   display: flex;
   height: 75vh;
+  overflow: hidden;
+  padding: 20px;
   width: 70vw;
-  background-color: #181818;
+}
+
+.app-container.mobile {
+  flex-direction: column;
+  width: 100vw;
+}
+
+.back-button {
+  align-self: flex-start;
+  background: none;
+  border: none;
   color: #eaeaea;
-  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1rem;
+  margin-bottom: 10px;
+}
+
+.left-pane,
+.right-pane {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  padding: 8px;
 }
 
 .no-conversation {
-  flex: 1;
-  display: flex;
   align-items: center;
-  justify-content: center;
   color: #999999;
-  font-style: italic;
-}
-
-.right-pane {
-  flex: 1;
   display: flex;
-  flex-direction: column;
-  padding: 8px;
-  background-color: #202020;
-  border-top-right-radius: 8px;
-  border-bottom-right-radius: 8px;
+  flex: 1;
+  font-style: italic;
+  justify-content: center;
 }
 
-@media (max-width: 768px) {
-  .app-container {
-    width: 100%;
-    height: 80%;
-    flex-direction: column;
-  }
-
-  .left-pane {
-    display: none;
-  }
-
-  .right-pane {
-    width: 100%;
-    height: 100%;
-    border-radius: 0;
-  }
+.titrePage {
+  margin-bottom: 40px;
+  text-align: center;
 }
 </style>
