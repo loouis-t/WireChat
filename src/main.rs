@@ -18,7 +18,7 @@ use tokio::join;
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
     dotenv().ok();
-    db_setup::init();
+    let mut db = db_setup::init();
 
     // Set up the WireGuard interface
     let mut chat = WireGuardMultiChat::new(
