@@ -3,46 +3,36 @@ use diesel::{
     insert_into,
 };
 
-table! {
-    /// Table
-    peers (public_key) {
-        public_key -> Text,
-        name -> Nullable<Text>,
-        /// ip + port
-        endpoint -> Text,
-        /// if ipv6 end-to-end : same as endpoint? (without port)
-        allowed_ip -> Text,
-    }
-}
+use crate::database::schema::peers;
 
+// Struct correspondant à une ligne dans la table "peers"
 #[derive(Queryable)]
-struct Peers {
-    public_key: String,
-    name: Option<String>,
-    endpoint: String,
-    allowed_ip: String,
+pub struct Peer {
+    pub public_key: String,
+    pub name: Option<String>,
+    pub endpoint: String,
+    pub allowed_ip: String,
 }
 
-// The insertable struct. Using &'a str as it references data (could also use String)
+// Struct utilisée pour insérer un nouveau peer dans la table
 #[derive(Insertable)]
-#[table_name = "peers"]
-struct NewPeer<'a> {
-    public_key: &'a str,
-    name: Option<&'a str>,
-    endpoint: &'a str,
-    allowed_ip: &'a str,
+#[diesel(table_name = peers)]
+pub struct NewPeer<'a> {
+    pub public_key: &'a str,
+    pub name: Option<&'a str>,
+    pub endpoint: &'a str,
+    pub allowed_ip: &'a str,
 }
 
-fn insert_peer(conn: &mut SqliteConnection) {
-    // Create a new peer record.
+// Fonction d'insertion dans la base
+pub fn insert_peer(conn: &mut SqliteConnection, public_key: &str, name: Option<&str>, endpoint: &str, allowed_ip: &str) {
     let new_peer = NewPeer {
-        public_key: "abcd1234",
-        name: Some("Alice"),  // or use None if you want to leave it as NULL
-        endpoint: "192.168.1.10:8000",
-        allowed_ip: "192.168.1.10",
+        public_key,
+        name,
+        endpoint,
+        allowed_ip,
     };
 
-    // Insert the new peer into the database.
     let result = insert_into(peers::table)
         .values(&new_peer)
         .execute(conn);
