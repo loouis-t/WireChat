@@ -1,7 +1,7 @@
 <template>
   <div class="contacts-container">
     <div class="contacts-header">
-      <h2>Contacts</h2>
+      <h2 class="titrePage">Contacts</h2>
     </div>
     <div>
       <table class="table">
@@ -115,6 +115,10 @@
   height: 100%;
 }
 
+.titrePage {
+  margin-bottom: 20px;
+}
+
 a {
   background-color: unset;
   color: unset;
@@ -131,7 +135,7 @@ a:hover {
   .contacts-container {
     width: 95%;
     height: 75vh;
-    padding: 10px;
+    padding: 20px;
   }
 
   .contacts-form {

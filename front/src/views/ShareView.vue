@@ -66,7 +66,7 @@ const configQRValid = computed(() => configQR.value !== '')
 }
 
 .qr-code-container {
-  margin: 40px 0px;
+  margin: 30px 0px;
 }
 
 .share-view {
@@ -81,12 +81,8 @@ const configQRValid = computed(() => configQR.value !== '')
   flex-direction: column;
 }
 
-.share-view h2 {
-  margin-bottom: 10px;
-}
-
 .titrePage {
-  margin-bottom: 40px;
+  margin-bottom: 20px;
 }
 
 .warning {
@@ -109,7 +105,7 @@ pre {
   .share-view {
     width: 90%;
     height: 75vh;
-    padding: 10px;
+    padding: 20px;
   }
 }
 </style>
