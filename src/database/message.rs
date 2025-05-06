@@ -51,7 +51,6 @@ pub fn insert_message(
     }
 }
 
-// Function to retrieve messages for a specific peer
 pub fn get_messages_for_peer(
     conn: &mut SqliteConnection,
     public_key: &str,
@@ -61,7 +60,6 @@ pub fn get_messages_for_peer(
         .load::<Message>(conn)
 }
 
-// Function to send a message to a specific peer
 pub fn send_message(
     conn: &mut SqliteConnection,
     sender_public_key: &str,
@@ -80,22 +78,6 @@ pub fn send_message(
         .execute(conn)
 }
 
-// Function to receive the message
-pub fn receive_message(
-    conn: &mut SqliteConnection,
-    message_id: i32,
-) -> QueryResult<Message> {
-    messages::table
-        .filter(messages::id.eq(message_id))
-        .first::<Message>(conn)
-}
-
-// Function to retrieve all messages
-pub fn get_all_messages(conn: &mut SqliteConnection) -> QueryResult<Vec<Message>> {
-    messages::table
-        .load::<Message>(conn)
-}
-
 // Function to delete a message by ID
 pub fn delete_message_by_id(conn: &mut SqliteConnection, message_id: i32) -> QueryResult<usize> {
     diesel::delete(messages::table.filter(messages::id.eq(message_id)))
@@ -110,9 +92,3 @@ pub fn delete_messages_for_peer(
     diesel::delete(messages::table.filter(messages::receiver_public_key.eq(public_key)))
         .execute(conn)
 }
-
-// Function to delete all messages
-pub fn delete_all_messages(conn: &mut SqliteConnection) -> QueryResult<usize> {
-    diesel::delete(messages::table).execute(conn)
-}
-
