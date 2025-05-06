@@ -101,10 +101,10 @@ function handleTouchEnd(e) {
   const deltaX = touchEndX - touchStartX
   if (Math.abs(deltaX) > 50 && isMobile.value) {
     if (deltaX < 0 && !inConversationView.value) {
-      if (touchedConversationId != null) {
+      if (deltaX < 0 && !inConversationView.value && touchedConversationId != null) {
         selectedConversationId.value = touchedConversationId
+        inConversationView.value = true
       }
-      inConversationView.value = true
     } else if (deltaX > 0 && inConversationView.value) {
       inConversationView.value = false
     }
