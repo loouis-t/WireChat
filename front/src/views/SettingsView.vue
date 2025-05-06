@@ -34,7 +34,7 @@ function handleFileUpload(event) {
 <template>
   <div class="profile-container">
     <div class="profile-header">
-      <h2>Profil</h2>
+      <h2 class="titrePage">Profil</h2>
     </div>
     <div class="blocPhotoProfil">
       <img class="photoProfil" src="../assets/profilePicture.png" />
@@ -65,7 +65,7 @@ function handleFileUpload(event) {
       <div class="page-container">
         <div class="settings-container">
           <div class="settings-header">
-            <h2>Paramètres WireGuard</h2>
+            <h2 class="titrePage">Paramètres WireGuard</h2>
           </div>
           <form @submit.prevent="saveSettings" class="settings-form">
             <div class="form-group">
@@ -270,6 +270,10 @@ function handleFileUpload(event) {
 
 .settings-header {
   text-align: center;
+}
+
+.titrePage {
+  margin-bottom: 0px;
 }
 
 /* Responsivité */

@@ -178,17 +178,15 @@ onBeforeUnmount(() => {
   box-sizing: border-box;
   color: #eaeaea;
   display: flex;
-  flex-grow: 1;
-  margin: 20px auto 0 auto;
+  height: 75vh;
   max-width: 1200px;
   overflow: hidden;
-  padding: 16px;
+  padding: 20px;
   width: 100%;
 }
 
 .app-container.mobile {
   flex-direction: column;
-  height: auto;
   width: 100%;
 }
 
@@ -207,7 +205,6 @@ onBeforeUnmount(() => {
   display: flex;
   flex: 1;
   flex-direction: column;
-  padding: 8px;
 }
 
 .no-conversation {
@@ -220,8 +217,6 @@ onBeforeUnmount(() => {
 }
 
 .titrePage {
-  font-size: 1.2rem;
-  font-weight: bold;
   margin-bottom: 20px;
   text-align: center;
 }

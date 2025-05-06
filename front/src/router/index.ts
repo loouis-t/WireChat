@@ -14,10 +14,17 @@ const router = createRouter({
       component: ChatView,
     },
     {
+      path: '/chatlist',
+      name: 'chatlist',
+      component: ChatList,
+    },
+    /*
+    {
       path: '/contacts',
       name: 'contacts',
       component: ContactsView,
     },
+    */
     {
       path: '/settings',
       name: 'settings',
@@ -27,12 +34,7 @@ const router = createRouter({
       path: '/share',
       name: 'share',
       component: ShareView,
-    },
-    {
-      path: '/chatlist',
-      name: 'chatlist',
-      component: ChatList,
-    },
+    }
   ],
 })
 
