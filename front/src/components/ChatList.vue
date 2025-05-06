@@ -5,6 +5,7 @@
       :key="conv.id"
       class="conversation-item"
       :class="{ active: conv.id === selectedConversationId }"
+      :data-conversation-id="conv.id"
       @click="$emit('selectConversation', conv.id)"
     >
       <div class="conversation-line">
@@ -25,18 +26,19 @@ const props = defineProps({
 
 <style scoped>
 .chat-list {
-  width: 500px;
   background-color: #212121;
-  overflow-y: auto;
+  border-bottom-left-radius: 8px;
   border-right: 1px solid #2f2f2f;
   border-top-left-radius: 8px;
-  border-bottom-left-radius: 8px;
+  max-width: 500px;
+  overflow-y: auto;
+  width: 100%;
 }
 
 .conversation-item {
-  padding: 12px;
-  cursor: pointer;
   border-bottom: 1px solid #2a2a2a;
+  cursor: pointer;
+  padding: 12px;
 }
 
 .conversation-item.active {
@@ -48,26 +50,34 @@ const props = defineProps({
 }
 
 .conversation-line {
+  align-items: center;
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  min-width: 0;
 }
 
 .conversation-name {
-  font-weight: bold;
   color: #e0e0e0;
-}
-
-.last-message {
-  font-size: 0.9em;
-  color: #cccccc;
-  white-space: nowrap;
+  flex: 1;
+  font-weight: bold;
   overflow: hidden;
   text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .last-time {
-  font-size: 0.85em;
   color: #aaaaaa;
+  flex-shrink: 0;
+  font-size: 0.85em;
+  margin-left: 10px;
+  white-space: nowrap;
+}
+
+.last-message {
+  color: #cccccc;
+  font-size: 0.9em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 </style>

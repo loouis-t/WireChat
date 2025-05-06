@@ -73,21 +73,48 @@ const activeConversation = computed(() =>
 const showNewConversation = ref(false)
 const isMobile = ref(window.innerWidth <= 768)
 const inConversationView = ref(false)
+
 let touchStartX = 0
 let touchEndX = 0
+let touchedConversationId = null
+
+function findConversationIdElement(el) {
+  while (el && el !== document.body) {
+    if (el.dataset?.conversationId) {
+      return parseInt(el.dataset.conversationId, 10)
+    }
+    el = el.parentElement
+  }
+  return null
+}
+
+function handleTouchStart(e) {
+  touchStartX = e.changedTouches[0].screenX
+  const touchY = e.changedTouches[0].clientY
+  const touchX = e.changedTouches[0].clientX
+  const element = document.elementFromPoint(touchX, touchY)
+  touchedConversationId = findConversationIdElement(element)
+}
+
+function handleTouchEnd(e) {
+  touchEndX = e.changedTouches[0].screenX
+  const deltaX = touchEndX - touchStartX
+  if (Math.abs(deltaX) > 50 && isMobile.value) {
+    if (deltaX < 0 && !inConversationView.value) {
+      if (touchedConversationId != null) {
+        selectedConversationId.value = touchedConversationId
+      }
+      inConversationView.value = true
+    } else if (deltaX > 0 && inConversationView.value) {
+      inConversationView.value = false
+    }
+  }
+}
 
 function handleResize() {
   isMobile.value = window.innerWidth <= 768
   if (!isMobile.value) inConversationView.value = false
 }
-
-onMounted(() => {
-  window.addEventListener('resize', handleResize)
-})
-
-onBeforeUnmount(() => {
-  window.removeEventListener('resize', handleResize)
-})
 
 function handleSelectConversation(id) {
   selectedConversationId.value = id
@@ -126,50 +153,43 @@ function createConversation(contactInfo) {
   conversations.push(newConv)
   selectedConversationId.value = newConv.id
   showNewConversation.value = false
-  inConversationView.value = true
+  if (isMobile.value) {
+    inConversationView.value = true
+  }
 }
 
 function closeNewConversation() {
   showNewConversation.value = false
 }
 
-function handleTouchStart(e) {
-  touchStartX = e.changedTouches[0].screenX
-}
+onMounted(() => {
+  window.addEventListener('resize', handleResize)
+})
 
-function handleTouchEnd(e) {
-  touchEndX = e.changedTouches[0].screenX
-  handleSwipeGesture()
-}
-
-function handleSwipeGesture() {
-  if (!isMobile.value) return
-  const diff = touchStartX - touchEndX
-  if (Math.abs(diff) > 50) {
-    if (diff > 0 && !inConversationView.value && selectedConversationId.value !== null) {
-      inConversationView.value = true
-    } else if (diff < 0 && inConversationView.value) {
-      inConversationView.value = false
-    }
-  }
-}
+onBeforeUnmount(() => {
+  window.removeEventListener('resize', handleResize)
+})
 </script>
 
 <style scoped>
 .app-container {
   background-color: #1e1e1e;
   border-radius: 8px;
+  box-sizing: border-box;
   color: #eaeaea;
   display: flex;
-  height: 75vh;
+  flex-grow: 1;
+  margin: 20px auto 0 auto;
+  max-width: 1200px;
   overflow: hidden;
-  padding: 20px;
-  width: 70vw;
+  padding: 16px;
+  width: 100%;
 }
 
 .app-container.mobile {
   flex-direction: column;
-  width: 100vw;
+  height: auto;
+  width: 100%;
 }
 
 .back-button {
@@ -200,7 +220,9 @@ function handleSwipeGesture() {
 }
 
 .titrePage {
-  margin-bottom: 40px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-bottom: 20px;
   text-align: center;
 }
 </style>
