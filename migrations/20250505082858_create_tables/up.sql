@@ -2,7 +2,8 @@ CREATE TABLE peers (
     public_key TEXT PRIMARY KEY,
     name TEXT,
     endpoint TEXT NOT NULL,
-    allowed_ip TEXT NOT NULL
+    allowed_ip TEXT NOT NULL,
+    interface_ip TEXT NOT NULL
 );
 
 CREATE TABLE messages (

@@ -1,12 +1,15 @@
 use actix::{Actor, Addr, Context, Handler, Message};
 use std::collections::HashMap;
-use crate::api::ws_session::ServerMessage;
+use crate::api::ws_session::{
+    ServerMessage,
+    WsSession,
+};
 
 #[derive(Message)]
 #[rtype(result = "()")]
 pub struct Connect {
     pub peer_key: String,
-    pub addr: Addr<crate::api::ws_session::WsSession>,
+    pub addr: Addr<WsSession>,
 }
 
 #[derive(Message)]
@@ -23,7 +26,7 @@ pub struct ForwardMessage {
 }
 
 pub struct Hub {
-    sessions: HashMap<String, Addr<crate::api::ws_session::WsSession>>,
+    sessions: HashMap<String, Addr<WsSession>>,
 }
 
 impl Hub {

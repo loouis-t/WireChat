@@ -16,6 +16,7 @@ diesel::table! {
         name -> Nullable<Text>,
         endpoint -> Text,
         allowed_ip -> Text,
+        interface_ip -> Text,
     }
 }
 

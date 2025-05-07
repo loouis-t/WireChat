@@ -2,33 +2,29 @@ mod wireguard;
 mod api;
 mod database;
 
-use database::{db_setup};
 use dotenv::dotenv;
 use std::env;
-use onetun::config::Config;
-use onetun::config::PortProtocol::Tcp;
-use onetun::events::Bus;
+use onetun::{
+    config::Config,
+    events::Bus,
+};
 use crate::wireguard::LocalConfig;
-
-#[macro_use]
 extern crate diesel;
-
-use database::db_setup::{init, DbPool};
-
-use tokio::net::TcpStream;
+use database::db_setup::init;
 use tokio::task::LocalSet;
-use tokio::io::{AsyncWriteExt};
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
     dotenv().ok();
+    env_logger::init();
     let pool = init();
 
     let config = LocalConfig::new(
         &env::var("iface_private_key").expect("iface_private_key not set"),
-        &env::var("peer_public_key").expect("iface_public_key not set"),
+        &env::var("peer_public_key").expect("peer_public_key not set"),
         &env::var("peer_endpoint").expect("peer_endpoint not set"),
         &env::var("peer_ip").expect("peer_ip not set"),
+        &env::var("iface_ip").expect("iface_ip not set"),
     );
 
     let bus = Bus::default();

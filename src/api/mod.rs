@@ -1,7 +1,7 @@
 pub mod hub;
 pub mod ws_session;
 
-use actix_web::{web, App, HttpServer};
+use actix_web::{web, App, HttpServer, Responder};
 use actix::Actor;
 use actix::Addr;
 use crate::database::db_setup::DbPool;
@@ -13,12 +13,13 @@ pub async fn run_api_server(pool: DbPool) -> std::io::Result<()> {
 
     HttpServer::new(move || {
         App::new()
+            .wrap(actix_web::middleware::Logger::default())
             .app_data(web::Data::new(pool.clone()))
             .app_data(web::Data::new(hub_addr.clone()))
-            // Route pour l'établissement du WebSocket
-            .route("/ws/", web::get().to(ws_session::ws_index))
+            .route("/", web::get().to(ws_session::ws_index))
+        
     })
-    .bind("127.0.0.1:8000")?
+    .bind("0.0.0.0:49369")?
     .run()
     .await
 }
