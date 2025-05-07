@@ -6,7 +6,7 @@ use crate::database::db_setup::DbPool;
 use crate::database::message::{insert_message, get_messages_for_peer};
 use crate::api::hub::{Connect, Disconnect, ForwardMessage};
 
-/// Message envoyée du Hub vers la session
+/// Message envoyé du Hub vers la session
 #[derive(actix::Message)]
 #[rtype(result = "()")] 
 pub struct ServerMessage(pub String);
@@ -51,23 +51,21 @@ struct ClientMessage {
 
 impl StreamHandler<Result<ws::Message, ws::ProtocolError>> for WsSession {
     fn handle(&mut self, item: Result<ws::Message, ws::ProtocolError>, ctx: &mut Self::Context) {
+        println!("[ws] Received message: {:?}", item);
         if let Ok(ws::Message::Text(text)) = item {
             if let Ok(msg) = serde_json::from_str::<ClientMessage>(&text) {
                 // Persister en base
                 if let Ok(mut conn) = self.pool.get() {
-                    insert_message(
-                        &mut conn,
-                        &self.peer_key,
-                        &msg.to,
-                        &msg.content,
-                        None,
-                    );
+                    insert_message(&mut conn, &self.peer_key, &msg.to, &msg.content, None);
                 }
+
                 // Router via le Hub
                 self.hub.do_send(ForwardMessage {
                     to: msg.to.clone(),
                     payload: msg.content.clone(),
                 });
+
+                println!("Sending message to {}: {}", msg.to, msg.content);
             }
         } else if let Ok(ws::Message::Ping(p)) = item {
             ctx.pong(&p);
@@ -92,6 +90,8 @@ pub async fn ws_index(
     pool: web::Data<DbPool>,
     hub: web::Data<Addr<crate::api::hub::Hub>>,
 ) -> impl Responder {
+    println!("request received: {:?}", req);
+    
     // Récupérer peer_key depuis la query string
     let peer_key = req.query_string().split('&')
         .find_map(|kv| {
@@ -104,7 +104,11 @@ pub async fn ws_index(
         .unwrap_or_default();
 
     ws::start(
-        WsSession { peer_key, hub: hub.get_ref().clone(), pool: pool.get_ref().clone() },
+        WsSession {
+            peer_key,
+            hub: hub.get_ref().clone(),
+            pool: pool.get_ref().clone(),
+        },
         &req,
         stream,
     )

@@ -8,7 +8,7 @@ repository = "https://github.com/loouis-t/WireChat"
 edition = "2024"
 
 [dependencies]
-tokio = { version = "1", features = ["full"] }
+tokio = { version = "1.45", features = ["full"] }
 
 actix = "0.13"
 actix-web = "4"
@@ -21,11 +21,9 @@ base64 = "0.22.1"
 dotenv = "0.15.0"
 
 diesel = { version = "2.2.10", features = ["sqlite", "chrono", "r2d2"] }
-r2d2 = "0.8"
 chrono = { version = "0.4", features = ["serde"] }
 onetun = "0.3.10"
-futures = "0.3.31"
-
+env_logger = "0.7.1"
 
 [profile.release]
 # Tell `rustc` to optimize for small code size.
