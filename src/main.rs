@@ -1,14 +1,12 @@
-mod wireguard;
-mod api;
+mod client;
 mod database;
+mod server;
+mod wireguard;
 
 use dotenv::dotenv;
 use std::env;
-use onetun::{
-    config::Config,
-    events::Bus,
-};
-use crate::wireguard::LocalConfig;
+use onetun::config::Config;
+use crate::wireguard::wireguard as wg;
 extern crate diesel;
 use database::db_setup::init;
 use tokio::task::LocalSet;
@@ -17,22 +15,23 @@ use tokio::task::LocalSet;
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
     dotenv().ok();
     env_logger::init();
-    let pool = init();
-
-    let config = LocalConfig::new(
-        &env::var("iface_private_key").expect("iface_private_key not set"),
-        &env::var("peer_public_key").expect("peer_public_key not set"),
-        &env::var("peer_endpoint").expect("peer_endpoint not set"),
-        &env::var("peer_ip").expect("peer_ip not set"),
-        &env::var("iface_ip").expect("iface_ip not set"),
-    );
-
-    let bus = Bus::default();
     let local = LocalSet::new();
 
+    // If the "--server" argument is passed, we run a tailscale-like api
+    let is_server = env::args().any(|arg| arg == "--server");
+    if is_server {
+        local.run_until(async {
+            server::server_api().await.unwrap();
+        }).await;
+        return Ok(());
+    }
+    
+    let bus = onetun::events::Bus::default();
+    let pool = init();
+
     local.run_until(async {
-        onetun::start_tunnels(Config::from(config), bus).await.unwrap();
-        api::run_api_server(pool).await.unwrap();
+        onetun::start_tunnels(Config::from(wg::get_base_config()), bus.clone()).await.unwrap(); // tunnel to tailscale
+        client::client_api(pool).await.unwrap();
     }).await;
 
     Ok(())

@@ -1,6 +1,6 @@
 use actix::{Actor, Addr, Context, Handler, Message};
 use std::collections::HashMap;
-use crate::api::ws_session::{
+use crate::client::ws_session::{
     ServerMessage,
     WsSession,
 };

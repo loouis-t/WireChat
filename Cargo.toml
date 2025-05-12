@@ -24,6 +24,7 @@ diesel = { version = "2.2.10", features = ["sqlite", "chrono", "r2d2"] }
 chrono = { version = "0.4", features = ["serde"] }
 onetun = "0.3.10"
 env_logger = "0.7.1"
+tokio-util = "0.7.14"
 
 [profile.release]
 # Tell `rustc` to optimize for small code size.
