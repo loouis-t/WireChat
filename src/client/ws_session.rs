@@ -4,7 +4,7 @@ use actix_web_actors::ws;
 use serde::Deserialize;
 use crate::database::db_setup::DbPool;
 use crate::database::message::{insert_message, get_messages_for_peer};
-use crate::api::hub::{Connect, Disconnect, ForwardMessage};
+use crate::client::hub::{Connect, Disconnect, ForwardMessage};
 
 /// Message envoyé du Hub vers la session
 #[derive(actix::Message)]
@@ -13,7 +13,7 @@ pub struct ServerMessage(pub String);
 
 pub struct WsSession {
     pub peer_key: String,
-    pub hub: Addr<crate::api::hub::Hub>,
+    pub hub: Addr<crate::client::hub::Hub>,
     pub pool: DbPool,
 }
 
@@ -88,7 +88,7 @@ pub async fn ws_index(
     req: HttpRequest,
     stream: web::Payload,
     pool: web::Data<DbPool>,
-    hub: web::Data<Addr<crate::api::hub::Hub>>,
+    hub: web::Data<Addr<crate::client::hub::Hub>>,
 ) -> impl Responder {
     println!("request received: {:?}", req);
     
