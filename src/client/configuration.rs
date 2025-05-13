@@ -48,6 +48,7 @@ pub async fn add_peer(
         &data.endpoint,
         &data.peer_ip,
         &data.interface_ip,
+        Some("8081"),
     );
 
     peer_configs.tunnels

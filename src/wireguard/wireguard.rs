@@ -3,7 +3,6 @@ use std::net::{IpAddr, SocketAddr};
 use std::str::FromStr;
 use std::sync::Arc;
 use tokio::sync::watch;
-use tokio_util::sync::CancellationToken;
 use base64::{engine::general_purpose::STANDARD, Engine as _};
 use onetun::config::{
     Config,
@@ -21,6 +20,7 @@ pub struct LocalConfig {
     endpoint: String,
     peer_ip: String,
     interface_ip: String,
+    port_to_forward: Option<String>,
 }
 
 pub struct EndpointConfig(pub Config, pub String);
@@ -29,8 +29,10 @@ pub struct EndpointConfig(pub Config, pub String);
 /// This is useful for creating the initial config
 impl From<LocalConfig> for Config {
     fn from(config: LocalConfig) -> Self {
+        let port_to_forward = config.port_to_forward.unwrap_or_else(|| "8080".to_string());
+        
         let (port_forwards, remote_port_forwards) =
-            parse_both_port_forwards(config.peer_ip.as_str()).unwrap();
+            parse_both_port_forwards(config.peer_ip.as_str(), port_to_forward.as_str()).unwrap();
         Config {
             port_forwards,
             remote_port_forwards,
@@ -61,13 +63,21 @@ impl From<EndpointConfig> for Config {
 }
 
 impl LocalConfig {
-    pub fn new(private_key: &str, public_key: &str, endpoint: &str, peer_ip: &str, interface_ip: &str) -> Self {
+    pub fn new(
+        private_key: &str,
+        public_key: &str,
+        endpoint: &str,
+        peer_ip: &str,
+        interface_ip: &str,
+        port_to_forward: Option<&str>,
+    ) -> Self {
         LocalConfig {
             private_key: private_key.to_string(),
             public_key: public_key.to_string(),
             endpoint: endpoint.to_string(),
             peer_ip: peer_ip.to_string(),
             interface_ip: interface_ip.to_string(),
+            port_to_forward: port_to_forward.map(|s| s.to_string()),
         }
     }
 }
@@ -79,8 +89,8 @@ pub fn bytes_from_base64(key: &str) -> [u8; 32] {
     array
 }
 
-fn parse_both_port_forwards(ip: &str) -> Result<(Vec<PortForwardConfig>, Vec<PortForwardConfig>), Box<dyn std::error::Error>> {
-    let notation = format!("127.0.0.1:8080:{}:49369", ip);
+fn parse_both_port_forwards(ip: &str, port_to_forward: &str) -> Result<(Vec<PortForwardConfig>, Vec<PortForwardConfig>), Box<dyn std::error::Error>> {
+    let notation = format!("127.0.0.1:{port_to_forward}:{}:49369", ip);
 
     let local = PortForwardConfig::from_notation(&notation, "127.0.0.1")?
         .into_iter()
@@ -138,5 +148,6 @@ pub fn get_base_config() -> LocalConfig {
         &env::var("peer_endpoint").expect("Missing peer_endpoint in .env"),
         &env::var("peer_ip").expect("Missing peer_ip in .env"),
         &env::var("iface_ip").expect("Missing iface_ip in .env"),
+        Some("8080")
     )
 }
