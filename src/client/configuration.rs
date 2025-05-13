@@ -48,6 +48,8 @@ pub async fn add_peer(
         &data.endpoint,
         &data.peer_ip,
         &data.interface_ip,
+        Some("8081"),
+        Some("4567"),
     );
 
     peer_configs.tunnels
@@ -55,6 +57,8 @@ pub async fn add_peer(
         .await
         .insert(data.peer_public_key.clone(), start_tunnel(Some(config)).await.unwrap());
 
+    println!("Peer added: {:?}", data.peer_public_key);
+    
     HttpResponse::Ok().body("WireGuard configured")
 }
 
@@ -73,4 +77,3 @@ pub async fn update_peer_endpoint(
         HttpResponse::NotFound().body("Endpoint not found")
     }
 }
-

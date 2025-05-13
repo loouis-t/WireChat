@@ -3,7 +3,6 @@ use std::net::{IpAddr, SocketAddr};
 use std::str::FromStr;
 use std::sync::Arc;
 use tokio::sync::watch;
-use tokio_util::sync::CancellationToken;
 use base64::{engine::general_purpose::STANDARD, Engine as _};
 use onetun::config::{
     Config,
@@ -19,8 +18,10 @@ pub struct LocalConfig {
     private_key: String,
     public_key: String,
     endpoint: String,
-    peer_ip: String,
+    peer_ips: Vec<String>,
     interface_ip: String,
+    from_port: Vec<String>,
+    to_port: Vec<String>,
 }
 
 pub struct EndpointConfig(pub Config, pub String);
@@ -29,8 +30,20 @@ pub struct EndpointConfig(pub Config, pub String);
 /// This is useful for creating the initial config
 impl From<LocalConfig> for Config {
     fn from(config: LocalConfig) -> Self {
+
+        let port_forwards = config
+            .peer_ips
+            .iter()
+            .zip(config.from_port.iter())
+            .zip(config.to_port.iter())
+            .map(|((ip, from), to)| (ip.as_str(), from.as_str(), to.as_str()))
+            .collect::<Vec<_>>();
+
         let (port_forwards, remote_port_forwards) =
-            parse_both_port_forwards(config.peer_ip.as_str()).unwrap();
+            parse_both_port_forwards(port_forwards, &config.interface_ip).unwrap();
+
+        println!("local config: {:?}", port_forwards);
+        println!("remote config: {:?}", remote_port_forwards);
         Config {
             port_forwards,
             remote_port_forwards,
@@ -61,13 +74,23 @@ impl From<EndpointConfig> for Config {
 }
 
 impl LocalConfig {
-    pub fn new(private_key: &str, public_key: &str, endpoint: &str, peer_ip: &str, interface_ip: &str) -> Self {
+    pub fn new(
+        private_key: &str,
+        public_key: &str,
+        endpoint: &str,
+        peer_ip: &str,
+        interface_ip: &str,
+        from_port: Option<&str>,
+        to_port: Option<&str>,
+    ) -> Self {
         LocalConfig {
             private_key: private_key.to_string(),
             public_key: public_key.to_string(),
             endpoint: endpoint.to_string(),
-            peer_ip: peer_ip.to_string(),
+            peer_ips: vec![peer_ip.to_string()],
             interface_ip: interface_ip.to_string(),
+            from_port: vec![from_port.unwrap_or_else(|| "8080").to_string()],
+            to_port: vec![to_port.unwrap_or_else(|| "49369").to_string()],
         }
     }
 }
@@ -79,18 +102,34 @@ pub fn bytes_from_base64(key: &str) -> [u8; 32] {
     array
 }
 
-fn parse_both_port_forwards(ip: &str) -> Result<(Vec<PortForwardConfig>, Vec<PortForwardConfig>), Box<dyn std::error::Error>> {
-    let notation = format!("127.0.0.1:8080:{}:49369", ip);
+fn parse_both_port_forwards(
+    port_forwards: Vec<(&str, &str, &str)>,
+    interface_ip: &str,
+) -> Result<(Vec<PortForwardConfig>, Vec<PortForwardConfig>), Box<dyn std::error::Error>> {
+    let mut local = Vec::new();
+    let mut remote = Vec::new();
 
-    let local = PortForwardConfig::from_notation(&notation, "127.0.0.1")?
-        .into_iter()
-        .collect::<Vec<_>>();
+    for (ip, from, to) in port_forwards {
+        let notation = format!("{from}:{ip}:{to}");
+        let local_configs =
+            PortForwardConfig::from_notation(&notation, "127.0.0.1")?
+            .into_iter()
+            .collect::<Vec<_>>();
 
-    let remote = local
-        .iter()
-        .cloned()
-        .map(|mut pf| { pf.remote = true; pf })
-        .collect::<Vec<_>>();
+        let remote_notation = format!("{to}:127.0.0.1:{to}");
+        let remote_configs =
+            PortForwardConfig::from_notation(&remote_notation, interface_ip)?
+            .iter()
+            .cloned()
+            .map(|mut pf| {
+                pf.remote = true;
+                pf
+            })
+            .collect::<Vec<_>>();
+
+        local.extend(local_configs);
+        remote.extend(remote_configs);
+    }
 
     Ok((local, remote))
 }
@@ -138,5 +177,7 @@ pub fn get_base_config() -> LocalConfig {
         &env::var("peer_endpoint").expect("Missing peer_endpoint in .env"),
         &env::var("peer_ip").expect("Missing peer_ip in .env"),
         &env::var("iface_ip").expect("Missing iface_ip in .env"),
+        Some("8080"),
+        Some("49369"),
     )
 }
