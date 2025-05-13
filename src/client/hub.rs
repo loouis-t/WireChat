@@ -1,5 +1,6 @@
 use actix::{Actor, Addr, Context, Handler, Message};
 use std::collections::HashMap;
+use crate::client::messenger::MessagePayload;
 use crate::client::ws_session::{
     ServerMessage,
     WsSession,
@@ -16,13 +17,6 @@ pub struct Connect {
 #[rtype(result = "()")]
 pub struct Disconnect {
     pub peer_key: String,
-}
-
-#[derive(Message)]
-#[rtype(result = "()")]
-pub struct ForwardMessage {
-    pub to: String,
-    pub payload: String,
 }
 
 pub struct Hub {
@@ -53,11 +47,11 @@ impl Handler<Disconnect> for Hub {
     }
 }
 
-impl Handler<ForwardMessage> for Hub {
+impl Handler<MessagePayload> for Hub {
     type Result = ();
-    fn handle(&mut self, msg: ForwardMessage, _: &mut Context<Self>) {
+    fn handle(&mut self, msg: MessagePayload, _: &mut Context<Self>) {
         if let Some(addr) = self.sessions.get(&msg.to) {
-            addr.do_send(ServerMessage(msg.payload));
+            addr.do_send(ServerMessage(msg.message));
         }
     }
 }

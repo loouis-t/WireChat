@@ -1,11 +1,14 @@
 use actix::{Actor, StreamHandler, Handler, Addr, AsyncContext, ActorContext};
 use actix_web::{HttpRequest, web, Responder};
+use actix_web::cookie::time::macros::time;
 use actix_web_actors::ws;
 use serde::Deserialize;
 use crate::database::db_setup::DbPool;
 use crate::database::message::{insert_message, get_messages_for_peer};
-use crate::client::hub::{Connect, Disconnect, ForwardMessage};
+use crate::client::hub::{Connect, Disconnect};
 use chrono::Utc;
+use crate::client::messenger;
+use crate::client::messenger::MessagePayload;
 
 /// Message envoyé du Hub vers la session
 #[derive(actix::Message)]
@@ -13,6 +16,7 @@ use chrono::Utc;
 pub struct ServerMessage(pub String);
 
 pub struct WsSession {
+    pub iface_key: String,
     pub peer_key: String,
     pub hub: Addr<crate::client::hub::Hub>,
     pub pool: DbPool,
@@ -35,7 +39,7 @@ impl Actor for WsSession {
                         "from":      msg.sender_public_key,
                         "to":        msg.receiver_public_key,
                         "content":   msg.message,
-                        "timestamp": msg.timestamp, 
+                        "timestamp": msg.timestamp,
                     }).to_string());
                 }
             }
@@ -61,15 +65,26 @@ impl StreamHandler<Result<ws::Message, ws::ProtocolError>> for WsSession {
         if let Ok(ws::Message::Text(text)) = item {
             if let Ok(msg) = serde_json::from_str::<ClientMessage>(&text) {
                 // Persister en base
+                let timestamp = Utc::now().naive_utc();
+
                 if let Ok(mut conn) = self.pool.get() {
-                    insert_message(&mut conn, &self.peer_key, &msg.to, &msg.content, Utc::now().naive_utc());
+                    insert_message(&mut conn, &self.peer_key, &msg.to, &msg.content, timestamp);
                 }
 
-                // Router via le Hub
-                self.hub.do_send(ForwardMessage {
-                    to: msg.to.clone(),
-                    payload: msg.content.clone(),
+                let payload = MessagePayload {
+                    from: self.peer_key.clone(), 
+                    to: msg.to.clone(), 
+                    message: msg.content.clone(), 
+                    timestamp: timestamp.to_string(),
+                };
+                // send to peer
+                let to_send = payload.clone();
+                tokio::spawn(async {
+                    messenger::send(to_send).await;
                 });
+
+                // Router via le Hub
+                self.hub.do_send(payload);
 
                 println!("Sending message to {}: {}", msg.to, msg.content);
             }
@@ -95,6 +110,7 @@ pub async fn ws_index(
     stream: web::Payload,
     pool: web::Data<DbPool>,
     hub: web::Data<Addr<crate::client::hub::Hub>>,
+    iface_key: web::Data<String>,
 ) -> impl Responder {
     println!("request received: {:?}", req);
     
@@ -111,6 +127,7 @@ pub async fn ws_index(
 
     ws::start(
         WsSession {
+            iface_key: iface_key.get_ref().clone(),
             peer_key,
             hub: hub.get_ref().clone(),
             pool: pool.get_ref().clone(),

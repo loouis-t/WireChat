@@ -30,8 +30,14 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let pool = init();
 
     local.run_until(async {
-        onetun::start_tunnels(Config::from(wg::get_base_config()), bus.clone()).await.unwrap(); // tunnel to tailscale
-        client::client_api(pool).await.unwrap();
+        tokio::join!(
+            async {
+                client::client_api(pool).await.unwrap();
+            },
+            async {
+                onetun::start_tunnels(Config::from(wg::get_base_config()), bus).await.unwrap();
+            }
+        );
     }).await;
 
     Ok(())
