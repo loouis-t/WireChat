@@ -16,7 +16,7 @@
 </template>
 
 <script setup>
-import { onUpdated, ref } from 'vue'
+import { onUpdated, ref, onMounted } from 'vue'
 import MessageBubble from './MessageBubble.vue'
 import ChatInput from './ChatInput.vue'
 

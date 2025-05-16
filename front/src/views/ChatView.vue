@@ -38,78 +38,23 @@
 </template>
 
 <script setup>
-import { reactive, ref, computed, onMounted, onBeforeUnmount } from 'vue'
+import { reactive, ref, computed, onBeforeUnmount, onMounted } from 'vue'
 import ChatList from '../components/ChatList.vue'
 import ChatWindow from '../components/ChatWindow.vue'
 import NewConversation from '../components/NewConversation.vue'
 
-const conversations = reactive([
-  {
-    id: 1,
-    name: 'Alice',
-    messages: [
-      { text: 'Hello, ça fait longtemps !', self: false },
-      { text: 'Salut Alice, oui en effet :)', self: true },
-    ],
-    lastMessage: 'Salut Alice, oui en effet :)',
-    lastTime: '10:15',
-  },
-  {
-    id: 2,
-    name: 'Bob',
-    messages: [
-      { text: 'Hey, tu as vu le projet ?', self: false },
-      { text: "Pas encore, je regarde ça aujourd'hui.", self: true },
-    ],
-    lastMessage: "Pas encore, je regarde ça aujourd'hui.",
-    lastTime: 'Hier',
-  },
-])
-
+const conversations = reactive([])
 const selectedConversationId = ref(null)
 const activeConversation = computed(() =>
-  conversations.find((conv) => conv.id === selectedConversationId.value),
+  conversations.find((c) => c.id === selectedConversationId.value),
 )
 const showNewConversation = ref(false)
 const isMobile = ref(window.innerWidth <= 768)
 const inConversationView = ref(false)
 
-let touchStartX = 0
-let touchEndX = 0
-let touchedConversationId = null
+const myPublicKey = ref('') // votre clé
 
-function findConversationIdElement(el) {
-  while (el && el !== document.body) {
-    if (el.dataset?.conversationId) {
-      return parseInt(el.dataset.conversationId, 10)
-    }
-    el = el.parentElement
-  }
-  return null
-}
-
-function handleTouchStart(e) {
-  touchStartX = e.changedTouches[0].screenX
-  const touchY = e.changedTouches[0].clientY
-  const touchX = e.changedTouches[0].clientX
-  const element = document.elementFromPoint(touchX, touchY)
-  touchedConversationId = findConversationIdElement(element)
-}
-
-function handleTouchEnd(e) {
-  touchEndX = e.changedTouches[0].screenX
-  const deltaX = touchEndX - touchStartX
-  if (Math.abs(deltaX) > 50 && isMobile.value) {
-    if (deltaX < 0 && !inConversationView.value) {
-      if (deltaX < 0 && !inConversationView.value && touchedConversationId != null) {
-        selectedConversationId.value = touchedConversationId
-        inConversationView.value = true
-      }
-    } else if (deltaX > 0 && inConversationView.value) {
-      inConversationView.value = false
-    }
-  }
-}
+let ws = null
 
 function handleResize() {
   isMobile.value = window.innerWidth <= 768
@@ -120,22 +65,23 @@ function handleSelectConversation(id) {
   selectedConversationId.value = id
   if (isMobile.value) inConversationView.value = true
 }
-
 function backToList() {
   inConversationView.value = false
 }
 
 function sendMessage({ conversationId, text }) {
-  const conv = conversations.find((c) => c.id === conversationId)
-  if (conv) {
-    conv.messages.push({ text: text, self: true })
-    conv.lastMessage = text
-    const now = new Date()
-    conv.lastTime =
-      now.getHours().toString().padStart(2, '0') +
-      ':' +
-      now.getMinutes().toString().padStart(2, '0')
+  if (!text.trim() || !activeConversation.value) return
+  const to = activeConversation.value.publicKey
+  const payload = { to, content: text }
+
+  if (ws && ws.readyState === WebSocket.OPEN) {
+    ws.send(JSON.stringify(payload))
   }
+
+  const conv = activeConversation.value
+  conv.messages.push({ id: Date.now(), text, self: false })
+  conv.lastMessage = text
+  conv.lastTime = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
 }
 
 function openNewConversation() {
@@ -143,34 +89,86 @@ function openNewConversation() {
 }
 
 function createConversation(contactInfo) {
-  const newConv = {
-    id: Date.now(),
+  const newId = Date.now()
+  conversations.push({
+    id: newId,
     name: contactInfo,
+    publicKey: contactInfo,
     messages: [],
     lastMessage: '',
     lastTime: '',
-  }
-  conversations.push(newConv)
-  selectedConversationId.value = newConv.id
+  })
   showNewConversation.value = false
-  if (isMobile.value) {
-    inConversationView.value = true
-  }
+  handleSelectConversation(newId)
 }
 
 function closeNewConversation() {
   showNewConversation.value = false
 }
 
-onMounted(() => {
+onMounted(async () => {
   window.addEventListener('resize', handleResize)
+
+  // 1) fetch la liste des peers (Alice & Bob)
+  try {
+    const res = await fetch('http://localhost:49369/get_peers')
+    const { peers } = await res.json()
+
+    // on détermine qu’on est Alice
+    const me = peers[0].public_key
+    // on bâtit les conversations pour tous les AUTRES peers
+    peers
+      .filter((p) => p.public_key !== me)
+      .forEach((p) => {
+        conversations.push({
+          id: p.public_key,
+          name: p.name || p.public_key,
+          publicKey: p.public_key,
+          messages: [],
+          lastMessage: '',
+          lastTime: '',
+        })
+      })
+
+    // 2) ouvre la WS en tant qu’Alice
+    ws = new WebSocket(`ws://localhost:49369/?peer_key=${encodeURIComponent(me)}`)
+
+    ws.onmessage = (evt) => {
+      console.log('Message reçu:', evt)
+      const msg = JSON.parse(evt.data)
+      // msg : { from, to, content, timestamp }
+      // on trouve la conversation correspondante
+      // - si msg.from === conv.id, c’est un message **entrant** dans cette bulle
+      // - si msg.to   === conv.id,    c’est un message **sortant**
+      conversations.forEach((conv) => {
+        if (msg.from === conv.id || msg.to === conv.id) {
+          conv.messages.push({
+            id: `${msg.timestamp}-${Math.random()}`,
+            text: msg.content,
+            self:
+              msg.to === conv.id // si c’est à moi (destinataire), self=false
+                ? false
+                : true, // si à un autre (Bob), self=true
+          })
+          // on met à jour l’aperçu
+          conv.lastMessage = msg.content
+          conv.lastTime = new Date(msg.timestamp).toLocaleTimeString([], {
+            hour: '2-digit',
+            minute: '2-digit',
+          })
+        }
+      })
+    }
+  } catch (err) {
+    console.error('Erreur fetch peers ou WS:', err)
+  }
 })
 
 onBeforeUnmount(() => {
   window.removeEventListener('resize', handleResize)
+  ws?.close()
 })
 </script>
-
 <style scoped>
 .app-container {
   background-color: #1e1e1e;

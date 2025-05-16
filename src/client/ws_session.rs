@@ -5,6 +5,7 @@ use serde::Deserialize;
 use crate::database::db_setup::DbPool;
 use crate::database::message::{insert_message, get_messages_for_peer};
 use crate::client::hub::{Connect, Disconnect, ForwardMessage};
+use chrono::Utc;
 
 /// Message envoyé du Hub vers la session
 #[derive(actix::Message)]
@@ -30,7 +31,12 @@ impl Actor for WsSession {
         if let Ok(mut conn) = self.pool.get() {
             if let Ok(pending) = get_messages_for_peer(&mut conn, &self.peer_key) {
                 for msg in pending {
-                    ctx.text(msg.message.clone());
+                    ctx.text(serde_json::json!({
+                        "from":      msg.sender_public_key,
+                        "to":        msg.receiver_public_key,
+                        "content":   msg.message,
+                        "timestamp": msg.timestamp, 
+                    }).to_string());
                 }
             }
         }
@@ -56,7 +62,7 @@ impl StreamHandler<Result<ws::Message, ws::ProtocolError>> for WsSession {
             if let Ok(msg) = serde_json::from_str::<ClientMessage>(&text) {
                 // Persister en base
                 if let Ok(mut conn) = self.pool.get() {
-                    insert_message(&mut conn, &self.peer_key, &msg.to, &msg.content, None);
+                    insert_message(&mut conn, &self.peer_key, &msg.to, &msg.content, Utc::now().naive_utc());
                 }
 
                 // Router via le Hub
