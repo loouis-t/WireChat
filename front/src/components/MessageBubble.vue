@@ -1,5 +1,5 @@
 <template>
-  <div class="message-bubble" :class="{ mine: message.self, theirs: !message.self }">
+  <div class="message-bubble" :class="{ theirs: message.self, mine: !message.self }">
     {{ message.text }}
   </div>
 </template>
@@ -12,7 +12,7 @@ const props = defineProps({
 
 <style scoped>
 .message-bubble {
-  max-width: 60%;
+  max-width: 70%;
   padding: 4px 12px;
   margin: 4px 0;
   border-radius: 18px;

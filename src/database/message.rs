@@ -3,17 +3,17 @@ use diesel::{
     insert_into,
 };
 
-use chrono::NaiveDateTime;
+use chrono::{NaiveDateTime, Utc};
 use crate::database::schema::messages;
 
 // Struct correspondant à une ligne dans la table "messages"
 #[derive(Queryable)]
 pub struct Message {
-    pub id: Option<i32>,
+    pub id: i32,
     pub sender_public_key: String,
     pub receiver_public_key: String,
     pub message: String,
-    pub timestamp: Option<NaiveDateTime>,
+    pub timestamp: NaiveDateTime,
 }
 
 // Struct utilisée pour insérer un nouveau message dans la table
@@ -23,7 +23,7 @@ pub struct NewMessage<'a> {
     pub sender_public_key: &'a str,
     pub receiver_public_key: &'a str,
     pub message: &'a str,
-    pub timestamp: Option<NaiveDateTime>,
+    pub timestamp: NaiveDateTime,
 }
 
 // Fonction d'insertion dans la base
@@ -32,7 +32,7 @@ pub fn insert_message(
     sender_public_key: &str,
     receiver_public_key: &str,
     message: &str,
-    timestamp: Option<chrono::NaiveDateTime>,
+    timestamp: chrono::NaiveDateTime,
 ) {
     let new_message = NewMessage {
         sender_public_key,
@@ -56,7 +56,11 @@ pub fn get_messages_for_peer(
     public_key: &str,
 ) -> QueryResult<Vec<Message>> {
     messages::table
-        .filter(messages::receiver_public_key.eq(public_key))
+        .filter(
+            messages::receiver_public_key
+                .eq(public_key)
+                .or(messages::sender_public_key.eq(public_key)),
+        )
         .load::<Message>(conn)
 }
 
@@ -70,7 +74,7 @@ pub fn send_message(
         sender_public_key,
         receiver_public_key,
         message,
-        timestamp: None,
+        timestamp: Utc::now().naive_utc(),
     };
 
     insert_into(messages::table)

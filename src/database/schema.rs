@@ -2,18 +2,18 @@
 
 diesel::table! {
     messages (id) {
-        id -> Nullable<Integer>,
+        id -> Integer,
         sender_public_key -> Text,
         receiver_public_key -> Text,
         message -> Text,
-        timestamp -> Nullable<Timestamp>,
+        timestamp -> Timestamp,
     }
 }
 
 diesel::table! {
     peers (public_key) {
-        public_key -> Nullable<Text>,
-        name -> Nullable<Text>,
+        public_key -> Text,
+        name -> Text,
         endpoint -> Text,
         allowed_ip -> Text,
         interface_ip -> Text,
