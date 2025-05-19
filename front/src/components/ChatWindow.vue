@@ -2,9 +2,6 @@
   <div class="chat-window">
     <div class="chat-header">
       <span>{{ conversation.name }}</span>
-      <button class="new-conversation-btn" @click="$emit('newConversation')">
-        <i class="boutonNouvelleConversation fa-solid fa-plus"></i>
-      </button>
     </div>
 
     <div ref="messagesContainer" class="messages">
@@ -23,7 +20,7 @@ import ChatInput from './ChatInput.vue'
 const props = defineProps({
   conversation: Object,
 })
-const emit = defineEmits(['sendMessage', 'newConversation'])
+const emit = defineEmits(['sendMessage'])
 
 const messagesContainer = ref(null)
 
@@ -70,16 +67,5 @@ onUpdated(() => {
   overflow-y: auto;
   display: flex;
   flex-direction: column;
-}
-
-.new-conversation-btn {
-  background-color: transparent;
-  border: none;
-  cursor: pointer;
-  font-size: 0.9rem;
-}
-
-.new-conversation-btn:hover {
-  text-decoration: underline;
 }
 </style>

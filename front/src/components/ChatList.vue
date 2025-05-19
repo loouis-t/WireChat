@@ -27,10 +27,8 @@ const props = defineProps({
 <style scoped>
 .chat-list {
   background-color: #212121;
-  border-bottom-left-radius: 8px;
-  border-right: 1px solid #2f2f2f;
-  border-top-left-radius: 8px;
-  max-width: 500px;
+  border-radius: 8px;
+  max-width: 96%;
   overflow-y: auto;
   width: 100%;
 }

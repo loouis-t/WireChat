@@ -8,6 +8,47 @@
     <!-- Liste des conversations -->
     <div v-if="!isMobile || (isMobile && !inConversationView)" class="left-pane">
       <h2 class="titrePage">Conversations</h2>
+      <div class="contacts">
+        <div class="contacts-container">
+          <div class="cellulePhotoProfil" scope="row">
+            <img class="photosProfil" src="../assets/skorfire.png" />
+            <p>SkorFire</p>
+          </div>
+          <div class="cellulePhotoProfil" scope="row">
+            <img class="photosProfil" src="../assets/automatic_edited.png" />
+            <p>DenizKoyu</p>
+          </div>
+          <div class="cellulePhotoProfil" scope="row">
+            <img class="photosProfil" src="../assets/chopper_edited.png" />
+            <p>TonyChopper</p>
+          </div>
+          <div class="cellulePhotoProfil" scope="row">
+            <img class="photosProfil" src="../assets/roger_edited.png" />
+            <p>GolDRoger</p>
+          </div>
+          <div class="cellulePhotoProfil" scope="row">
+            <img class="photosProfil" src="../assets/skorfire.png" />
+            <p>SkorFire</p>
+          </div>
+          <div class="cellulePhotoProfil" scope="row">
+            <img class="photosProfil" src="../assets/automatic_edited.png" />
+            <p>DenizKoyu</p>
+          </div>
+          <div class="cellulePhotoProfil" scope="row">
+            <img class="photosProfil" src="../assets/chopper_edited.png" />
+            <p>TonyChopper</p>
+          </div>
+          <div class="cellulePhotoProfil" scope="row">
+            <img class="photosProfil" src="../assets/roger_edited.png" />
+            <p>GolDRoger</p>
+          </div>
+        </div>
+        <div class="cellulePhotoProfil" scope="row">
+          <button class="new-conversation-btn" @click="openNewConversation">
+            <i class="boutonNouvelleConversation fa-solid fa-plus"></i>
+          </button>
+        </div>
+      </div>
       <ChatList
         :conversations="conversations"
         :selectedConversationId="selectedConversationId"
@@ -86,6 +127,12 @@ function sendMessage({ conversationId, text }) {
 
 function openNewConversation() {
   showNewConversation.value = true
+  if (isMobile.value) inConversationView.value = true
+}
+
+function closeNewConversation() {
+  showNewConversation.value = false
+  if (isMobile.value) inConversationView.value = false
 }
 
 function createConversation(contactInfo) {
@@ -100,10 +147,6 @@ function createConversation(contactInfo) {
   })
   showNewConversation.value = false
   handleSelectConversation(newId)
-}
-
-function closeNewConversation() {
-  showNewConversation.value = false
 }
 
 onMounted(async () => {
@@ -169,6 +212,7 @@ onBeforeUnmount(() => {
   ws?.close()
 })
 </script>
+
 <style scoped>
 .app-container {
   background-color: #1e1e1e;
@@ -203,6 +247,14 @@ onBeforeUnmount(() => {
   display: flex;
   flex: 1;
   flex-direction: column;
+  width: 50%;
+}
+
+@media screen and (max-width: 768px) {
+  .left-pane,
+  .right-pane {
+    width: 100%;
+  }
 }
 
 .no-conversation {
@@ -217,5 +269,44 @@ onBeforeUnmount(() => {
 .titrePage {
   margin-bottom: 20px;
   text-align: center;
+}
+
+.new-conversation-btn {
+  background-color: #ffffff;
+  border: none;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.new-conversation-btn:hover {
+  text-decoration: underline;
+}
+
+.contacts {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  margin-bottom: 20px;
+  max-width: 100%;
+}
+
+.contacts-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-evenly;
+  max-width: 70%;
+  overflow-y: scroll;
+}
+
+.cellulePhotoProfil {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 10px;
+}
+.photosProfil {
+  height: 48px;
 }
 </style>
