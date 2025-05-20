@@ -153,17 +153,16 @@ function closeScanner() {
 }
 
 .form {
-  width: 100%;
+  width: 70%;
   height: 90%;
   display: flex;
+  padding: 20px;
   flex-direction: column;
   justify-content: space-between;
 }
 
 .form input[type='file'] {
-  padding: 10px 14px;
   border-radius: 8px;
-  background-color: #2b2b2b;
   color: #f5f5f5;
   font-size: 1rem;
   margin-top: 2%;
@@ -187,8 +186,12 @@ function closeScanner() {
   width: 100%;
   height: 100%;
   background-color: #1e1e1e;
-  padding: 30px;
+  padding: 20px;
   color: #e0e0e0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 .or-separator {
@@ -219,8 +222,8 @@ function closeScanner() {
 }
 
 .scanner-container {
-  width: 350px;
-  height: 280px;
+  width: 550px;
+  height: 380px;
   margin: 8px auto;
   position: relative;
 }

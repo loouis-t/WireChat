@@ -44,7 +44,7 @@ const configQRValid = computed(() => configQR.value !== '')
       Faites-le scanner par votre interlocuteur.
     </p>
     <div class="qr-code-container">
-      <qrcode-vue :value="configQR" :size="200" />
+      <qrcode-vue :value="configQR" :size="280" />
     </div>
     <div class="config-display" v-if="configQRValid">
       <pre>{{ configQR }}</pre>
@@ -71,13 +71,13 @@ const configQRValid = computed(() => configQR.value !== '')
 
 .share-view {
   padding: 20px;
-  width: 35vw;
-  height: 75vh;
+  width: 100%;
+  height: 100%;
   background-color: #1e1e1e;
   color: #eaeaea;
-  border-radius: 8px;
   text-align: center;
   display: flex;
+  justify-content: space-evenly;
   flex-direction: column;
 }
 

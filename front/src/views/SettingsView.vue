@@ -44,26 +44,27 @@ function handleFileUpload(event) {
       </div>
     </div>
     <form @submit.prevent="saveProfile" class="profile-form">
-      <div class="form-group">
-        <label for="pseudo">Pseudo</label>
-        <input
+      <div class="page-container">
+        <div class="form-group">
+          <label for="pseudo">Pseudo</label>
+          <input
           id="pseudo"
           type="text"
           v-model="profile.pseudo"
           placeholder="Le nom avec lequel vous apparaîtrez dans l'application"
-        />
-      </div>
-      <div class="form-group">
-        <label for="bio">Bio</label>
-        <textarea
+          />
+        </div>
+        <div class="form-group">
+          <label for="bio">Bio</label>
+          <textarea
           class="bio"
           id="bio"
           v-model="profile.bio"
           placeholder="Votre bio ici..."
-        ></textarea>
+          ></textarea>
+        </div>
       </div>
       <div class="page-container">
-        <div class="settings-container">
           <div class="settings-header">
             <h2 class="titrePage">Paramètres WireGuard</h2>
           </div>
@@ -104,7 +105,6 @@ function handleFileUpload(event) {
             </div>
           </form>
         </div>
-      </div>
     </form>
   </div>
 </template>
@@ -131,6 +131,8 @@ function handleFileUpload(event) {
 .blocPhotoProfil {
   display: flex;
   margin-bottom: 10px;
+  padding: 20px;
+  width: 60%;
 }
 
 .boutonSubmit {
@@ -146,6 +148,7 @@ function handleFileUpload(event) {
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  width: 96%;
 }
 
 .photoProfil {
@@ -156,15 +159,26 @@ function handleFileUpload(event) {
 .profile-container {
   color: #eaeaea;
   background-color: #1e1e1e;
-  border-radius: 8px;
-  height: 75vh;
-  padding: 20px;
-  width: 35vw;
-}
-
-.profile-form .form-group {
+  height: 100%;
+  width: 100%;
   display: flex;
   flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.profile-form {
+  width: 60%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
 }
 
 .profile-form button {
@@ -213,18 +227,18 @@ function handleFileUpload(event) {
 }
 
 .profile-header {
-  margin-bottom: 10px;
-  text-align: center;
+  width: 57%;
 }
 
 .settings-container {
   background-color: #1e1e1e;
-  border-radius: 8px;
   color: #eaeaea;
-  padding: 20px;
-  width: 35vw;
+  width: 100%;
 }
 
+.settings-form {
+  width: 100%;
+}
 .settings-form button {
   width: 100%;
   border: none;
@@ -269,11 +283,8 @@ function handleFileUpload(event) {
 }
 
 .settings-header {
-  text-align: center;
-}
-
-.titrePage {
-  margin-bottom: 0px;
+  width: 100%;
+  margin-top: 2%;
 }
 
 /* Responsivité */

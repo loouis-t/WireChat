@@ -215,15 +215,13 @@ onBeforeUnmount(() => {
 
 <style scoped>
 .app-container {
-  background-color: #1e1e1e;
-  border-radius: 8px;
+  background-color: #fff6ec;
   box-sizing: border-box;
   color: #eaeaea;
   display: flex;
-  height: 75vh;
-  max-width: 1200px;
-  overflow: hidden;
-  padding: 20px;
+  flex-direction: row;
+  justify-content: space-evenly;
+  height: 100%;
   width: 100%;
 }
 
@@ -242,28 +240,40 @@ onBeforeUnmount(() => {
   margin-bottom: 10px;
 }
 
-.left-pane,
+.left-pane{
+  display: flex;
+  flex-direction: column;
+  width: 30%;
+  background-color: #202020;
+  padding: 1%;
+}
 .right-pane {
   display: flex;
-  flex: 1;
   flex-direction: column;
-  width: 50%;
+  width: 70%;
 }
 
 @media screen and (max-width: 768px) {
-  .left-pane,
+  .app-container {
+    flex-direction: column;
+    width: 100%;
+  }
+  .left-pane {
+    width: 100%;
+  }
   .right-pane {
     width: 100%;
   }
+  
 }
 
 .no-conversation {
   align-items: center;
   color: #999999;
   display: flex;
-  flex: 1;
   font-style: italic;
   justify-content: center;
+  height: 100%;
 }
 
 .titrePage {
@@ -309,4 +319,5 @@ onBeforeUnmount(() => {
 .photosProfil {
   height: 48px;
 }
+
 </style>
