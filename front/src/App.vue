@@ -24,242 +24,134 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <div class="wrapper">
-    <header>
-      <img alt="WG logo" class="logo" src="@/assets/logo.svg" />
-      <nav>
-        <RouterLink to="/">Chat<i class="fa-solid fa-comments iconeFontAwesome"></i></RouterLink>
-        <RouterLink to="/settings"
-          >Paramètres<img class="gear" src="./assets/gear.webp"
-        /></RouterLink>
-        <RouterLink to="/share">
-          Partager<img class="shareIcon" src="./assets/partager.png" />
-        </RouterLink>
+  <div class="app-container">
+    <!-- Sidebar / navigation fixe
+    <aside class="sidebar" :class="{ mobileOpen: isMobile && showMobileMenu }">
+      <header class="sidebar-header">
+        <img alt="WG logo" class="logo" src="@/assets/logo.svg" />
+        <button v-if="isMobile" class="close-menu" @click="toggleMobileMenu">×</button>
+      </header>
+      <nav class="sidebar-nav">
+        <RouterLink to="/" @click="isMobile && toggleMobileMenu()">Chat</RouterLink>
+        <RouterLink to="/settings" @click="isMobile && toggleMobileMenu()">Paramètres</RouterLink>
+        <RouterLink to="/share" @click="isMobile && toggleMobileMenu()">Partager</RouterLink>
       </nav>
-      <button v-if="isMobile" class="burger-btn" @click="toggleMobileMenu">
-        <img src="./assets/menu.png" alt="menu" class="burger-icon" />
-      </button>
-    </header>
+    </aside> -->
 
-    <div v-if="isMobile && showMobileMenu" class="mobile-menu">
-      <button class="close-menu" @click="toggleMobileMenu">×</button>
-      <RouterLink @click="toggleMobileMenu" to="/"
-        >Chat<i class="fa-solid fa-comments" style="margin-left: 8px"></i
-      ></RouterLink>
-      <RouterLink @click="toggleMobileMenu" to="/settings"
-        >Paramètres<img class="phoneGear" src="./assets/gear.webp"
-      /></RouterLink>
-      <RouterLink @click="toggleMobileMenu" to="/share">
-        Partager<img class="phoneShare" src="./assets/partager.png" />
-      </RouterLink>
+    <!-- Main content -->
+    <div class="main-column">
+      <header class="main-header">
+        <button v-if="isMobile" class="burger-btn" @click="toggleMobileMenu">
+          <img src="./assets/menu.png" alt="menu" class="burger-icon" />
+        </button>
+        <img alt="WG logo" class="logo-desktop" src="@/assets/logo.svg" />
+        <nav class="main-nav" v-if="!isMobile">
+          <RouterLink to="/">Chat</RouterLink>
+          <RouterLink to="/settings">Paramètres</RouterLink>
+          <RouterLink to="/share">Partager</RouterLink>
+        </nav>
+      </header>
+
+      <!-- Vue de la route -->
+      <main class="content-area">
+        <RouterView />
+      </main>
     </div>
-
-    <RouterView />
   </div>
 </template>
 
 <style scoped>
-.gear {
-  height: 18px;
-  margin-bottom: -4px;
-  margin-left: 5px;
-  filter: invert(1);
+/* Container principal en deux colonnes */
+.app-container {
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
 }
 
-.iconeFontAwesome {
-  margin-left: 8px;
+/* Bouton fermer */
+.close-menu {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: #fff;
+  cursor: pointer;
 }
 
-.logo {
-  display: block;
-  height: 125px;
-  margin: 0.5rem;
-  width: 125px;
-}
-
-.mobile-menu a.router-link-exact-active .phoneGear {
-  content: url('./assets/gear_edited.png');
-  filter: invert(0);
-}
-
-.mobile-menu a.router-link-exact-active .phoneShare {
-  content: url('./assets/partager_edited.png');
-  filter: invert(0);
-}
-
-.phoneGear {
-  height: 24px;
-  margin-bottom: -4px;
-  margin-left: 5px;
-  filter: invert(1);
-}
-
-.phoneShare {
-  height: 24px;
-  margin-bottom: -4px;
-  margin-left: 5px;
-  filter: invert(1);
-}
-
-.shareIcon {
-  height: 18px;
-  margin-bottom: -4px;
-  margin-left: 5px;
-  filter: invert(1);
-}
-
-.wrapper {
+/* Colonne principale */
+.main-column {
+  flex: 1;
   display: flex;
   flex-direction: column;
-  justify-content: space-evenly;
-  align-items: center;
-  height: 100vh;
-  width: 100%;
 }
 
-header {
+/* En-tête principal */
+.main-header {
   display: flex;
+  align-items: center;
   justify-content: space-between;
-  align-items: center;
-  padding: 0 1rem;
-  color: #eaeaea;
-  height: 8vh;
+  background-color: var(--color-secondary);
+  padding: 1rem;
+  height: 80px;
 }
-
-nav {
+.logo-desktop {
+  display: none;
+  height: 60px;
+}
+.main-nav {
   display: flex;
-  font-size: 1rem;
 }
 
-nav a {
-  display: inline-block;
-  padding: 0 1rem;
-  border-left: 1px solid var(--color-border);
-  color: #ffffff;
+.main-nav a {
+  position: relative;
+  display: inline-block;  /* indispensable pour que ::after corresponde à la largeur du lien */
+  margin-left: 3rem;
+  color: #fff;
+  text-decoration: none;
+  padding-bottom: 4px;     /* espace sous le texte pour l’underline */
 }
 
-nav a:first-of-type {
-  border: 0;
+.main-nav a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 2px;
+  width: 0;                /* commence à 0 */
+  background-color: #8b0000;
+  transition: width 0.2s ease;  /* animation de la largeur */
+  border-radius: 25px;
 }
 
-nav a.router-link-exact-active {
-  color: #7d2320;
+.main-nav a:hover::after {
+  width: 100%;             /* s’étend jusqu’à 100% */
 }
 
-nav a.router-link-exact-active .gear {
-  content: url('./assets/gear_edited.png');
-  filter: invert(0);
+/* Burger menu */
+.burger-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+.burger-icon {
+  width: 28px;
+  height: 28px;
 }
 
-nav a.router-link-exact-active .shareIcon {
-  content: url('./assets/partager_edited.png');
-  filter: invert(0);
+/* Zone de contenu */
+.content-area {
+  flex: 1;
+  overflow-y: auto;
+  background-color: #f5f5f5;
 }
 
-nav a.router-link-exact-active:hover {
-  background-color: transparent;
-}
-
-@media (min-width: 1024px) {
-  .burger-btn {
-    display: none;
-    background: none;
-    border: none;
-    font-size: 1.5rem;
-    color: #eaeaea;
-  }
-
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header {
-    display: flex;
-    place-items: center;
-    justify-content: space-between;
-    align-items: center;
-  }
-
-  header .wrapper {
-    display: flex;
-    flex-wrap: wrap;
-  }
-
-  nav {
-    text-align: left;
-    font-size: 1rem;
-    padding: 1rem 0;
-    margin-top: 1rem;
-  }
-}
-
-@media (max-width: 768px) {
-  .burger-btn {
-    border: none;
-    background-color: transparent;
+/* Affichage desktop */
+@media (min-width: 769px) {
+  .main-header .logo-desktop {
     display: block;
-    filter: invert(1);
   }
-
-  .burger-icon {
-    width: 30px;
-    height: 30px;
-    filter: invert(0);
-  }
-
-  .close-menu {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    font-size: 2rem;
-    color: #fff;
-    background-color: transparent;
-    border: none;
-    cursor: pointer;
-  }
-
-  .logo {
-    width: 20%;
-  }
-
-  .mobile-menu {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.92);
-    color: #ffffff;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .mobile-menu a {
-    margin-bottom: 1rem;
-    font-size: 1.5rem;
-    color: #ffffff;
-  }
-
-  .mobile-menu a:hover {
-    text-decoration: underline;
-  }
-  .mobile-menu a.router-link-exact-active {
-    color: #7d2320;
-  }
-
-  header {
-    width: 100%;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    margin: 0;
-  }
-
-  nav {
+  .burger-btn {
     display: none;
-    margin: 0;
   }
 }
 </style>

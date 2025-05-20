@@ -5,20 +5,6 @@
   font-weight: normal;
 }
 
-a,
-.green {
-  text-decoration: none;
-  color: var(--color-text);
-  transition: 0.4s;
-  padding: 3px;
-}
-
-@media (hover: hover) {
-  a:hover {
-    background-color: hsla(0, 100%, 37%, 0.2);
-  }
-}
-
 @media (min-width: 1024px) {
   .app {
     display: flex;
