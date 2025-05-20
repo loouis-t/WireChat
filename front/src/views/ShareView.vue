@@ -101,11 +101,5 @@ pre {
   .qr-code-container {
     width: 100%;
   }
-
-  .share-view {
-    width: 90%;
-    height: 75vh;
-    padding: 20px;
-  }
 }
 </style>

@@ -48,63 +48,63 @@ function handleFileUpload(event) {
         <div class="form-group">
           <label for="pseudo">Pseudo</label>
           <input
-          id="pseudo"
-          type="text"
-          v-model="profile.pseudo"
-          placeholder="Le nom avec lequel vous apparaîtrez dans l'application"
+            id="pseudo"
+            type="text"
+            v-model="profile.pseudo"
+            placeholder="Le nom avec lequel vous apparaîtrez dans l'application"
           />
         </div>
         <div class="form-group">
           <label for="bio">Bio</label>
           <textarea
-          class="bio"
-          id="bio"
-          v-model="profile.bio"
-          placeholder="Votre bio ici..."
+            class="bio"
+            id="bio"
+            v-model="profile.bio"
+            placeholder="Votre bio ici..."
           ></textarea>
         </div>
       </div>
       <div class="page-container">
-          <div class="settings-header">
-            <h2 class="titrePage">Paramètres WireGuard</h2>
-          </div>
-          <form @submit.prevent="saveSettings" class="settings-form">
-            <div class="form-group">
-              <label class="ipv6" for="ipv6">IPv6</label>
-              <input id="ipv6" type="text" v-model="settings.ipv6" placeholder="Ex : fe80::1" />
-            </div>
-            <div class="form-group">
-              <label for="port">Port</label>
-              <input
-                id="port"
-                type="number"
-                v-model.number="settings.port"
-                placeholder="Ex : 51820"
-              />
-            </div>
-            <div class="form-group">
-              <label for="privateKey">Clé privée</label>
-              <input
-                id="privateKey"
-                type="text"
-                v-model="settings.privateKey"
-                placeholder="Votre clé privée"
-              />
-            </div>
-            <div class="form-group">
-              <label for="publicKey">Clé publique</label>
-              <input
-                id="publicKey"
-                type="text"
-                v-model="settings.publicKey"
-                placeholder="Votre clé publique"
-              />
-            </div>
-            <div class="form-group">
-              <button class="boutonSubmit" type="submit">Enregistrer les paramètres</button>
-            </div>
-          </form>
+        <div class="settings-header">
+          <h2 class="titrePage">Paramètres WireGuard</h2>
         </div>
+        <form @submit.prevent="saveSettings" class="settings-form">
+          <div class="form-group">
+            <label class="ipv6" for="ipv6">IPv6</label>
+            <input id="ipv6" type="text" v-model="settings.ipv6" placeholder="Ex : fe80::1" />
+          </div>
+          <div class="form-group">
+            <label for="port">Port</label>
+            <input
+              id="port"
+              type="number"
+              v-model.number="settings.port"
+              placeholder="Ex : 51820"
+            />
+          </div>
+          <div class="form-group">
+            <label for="privateKey">Clé privée</label>
+            <input
+              id="privateKey"
+              type="text"
+              v-model="settings.privateKey"
+              placeholder="Votre clé privée"
+            />
+          </div>
+          <div class="form-group">
+            <label for="publicKey">Clé publique</label>
+            <input
+              id="publicKey"
+              type="text"
+              v-model="settings.publicKey"
+              placeholder="Votre clé publique"
+            />
+          </div>
+          <div class="form-group">
+            <button class="boutonSubmit" type="submit">Enregistrer les paramètres</button>
+          </div>
+        </form>
+      </div>
     </form>
   </div>
 </template>
@@ -289,23 +289,21 @@ function handleFileUpload(event) {
 
 /* Responsivité */
 @media (max-width: 768px) {
-  .bio {
-    width: 100%;
-    height: 15vh;
-  }
-
-  .blocImportPhotoProfil {
-    width: 70%;
-    display: block;
-  }
-
-  .profile-container,
-  .settings-container {
-    width: 90vw;
-  }
-
   .profile-form {
+    width: 90%;
+  }
+  .profile-header {
+    width: 87%;
+  }
+  .blocImportPhotoProfil {
     width: 100%;
+  }
+  .blocPhotoProfil {
+    width: 100%;
+  }
+  label {
+    margin-top: 2px;
+    margin-bottom: 2px;
   }
 }
 </style>
