@@ -227,4 +227,23 @@ function closeScanner() {
   margin: 8px auto;
   position: relative;
 }
+
+@media screen and (max-width: 768px) {
+  .scanner-container {
+    width: 100%;
+    height: 100%;
+    padding: 0;
+  }
+
+  .form {
+    width: 100%;
+    height: 100%;
+    padding: 10px;
+  }
+
+  .scanner-container {
+    width: 320px;
+    height: 340px;
+  }
+}
 </style>

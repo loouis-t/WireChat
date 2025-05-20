@@ -23,10 +23,6 @@
             <p>TonyChopper</p>
           </div>
           <div class="cellulePhotoProfil" scope="row">
-            <img class="photosProfil" src="../assets/roger_edited.png" />
-            <p>GolDRoger</p>
-          </div>
-          <div class="cellulePhotoProfil" scope="row">
             <img class="photosProfil" src="../assets/skorfire.png" />
             <p>SkorFire</p>
           </div>
@@ -37,10 +33,6 @@
           <div class="cellulePhotoProfil" scope="row">
             <img class="photosProfil" src="../assets/chopper_edited.png" />
             <p>TonyChopper</p>
-          </div>
-          <div class="cellulePhotoProfil" scope="row">
-            <img class="photosProfil" src="../assets/roger_edited.png" />
-            <p>GolDRoger</p>
           </div>
         </div>
         <div class="cellulePhotoProfil" scope="row">
@@ -223,48 +215,51 @@ onBeforeUnmount(() => {
   justify-content: space-evenly;
   height: 100%;
   width: 100%;
+  overflow-x: hidden;
 }
 
 .app-container.mobile {
   flex-direction: column;
-  width: 100%;
 }
 
 .back-button {
-  align-self: flex-start;
-  background: none;
+  position: absolute;
+  top: 1.5rem;
+  right: 1rem;
+  background: rgba(255, 255, 255, 0.8);
   border: none;
-  color: #eaeaea;
-  cursor: pointer;
+  padding: 0.5rem 0.75rem;
   font-size: 1rem;
-  margin-bottom: 10px;
+  color: #202020;
+  cursor: pointer;
+  border-radius: 4px;
+  z-index: 10;
 }
 
-.left-pane{
-  display: flex;
-  flex-direction: column;
+.left-pane {
   width: 30%;
   background-color: #202020;
-  padding: 1%;
+  padding: 1rem;
+  box-sizing: border-box;
 }
 .right-pane {
+  flex: 1;
   display: flex;
   flex-direction: column;
-  width: 70%;
+  box-sizing: border-box;
 }
 
-@media screen and (max-width: 768px) {
-  .app-container {
-    flex-direction: column;
-    width: 100%;
+@media (max-width: 768px) {
+  .left-pane,
+  .right-pane {
+    width: 100vw;
+    box-sizing: border-box;
+    margin: 0;
   }
   .left-pane {
-    width: 100%;
+    overflow-x: hidden;
+    height: 100%;
   }
-  .right-pane {
-    width: 100%;
-  }
-  
 }
 
 .no-conversation {
@@ -319,5 +314,4 @@ onBeforeUnmount(() => {
 .photosProfil {
   height: 48px;
 }
-
 </style>
