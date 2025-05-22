@@ -1,6 +1,5 @@
 use actix::{Actor, StreamHandler, Handler, Addr, AsyncContext, ActorContext};
 use actix_web::{HttpRequest, web, Responder};
-use actix_web::cookie::time::macros::time;
 use actix_web_actors::ws;
 use serde::Deserialize;
 use crate::database::db_setup::DbPool;

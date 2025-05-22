@@ -7,8 +7,7 @@ CREATE TABLE peers (
 );
 
 CREATE TABLE messages (
-    id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-    sender_public_key TEXT NOT NULL,
+    sender_public_key TEXT PRIMARY KEY NOT NULL,
     receiver_public_key TEXT NOT NULL,
     message TEXT NOT NULL,
     timestamp DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL,

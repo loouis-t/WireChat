@@ -15,12 +15,10 @@ const profile = reactive({
 
 function saveSettings() {
   console.log('Paramètres enregistrés :', JSON.parse(JSON.stringify(settings)))
-  // Ici, vous pouvez intégrer un appel à une API pour persister ces données.
 }
 
 function saveProfile() {
   console.log('Profil enregistré :', JSON.parse(JSON.stringify(profile)))
-  // Ici, vous pouvez intégrer un appel à une API pour persister ces données.
 }
 
 function handleFileUpload(event) {

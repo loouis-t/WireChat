@@ -5,7 +5,6 @@
     @touchstart="handleTouchStart"
     @touchend="handleTouchEnd"
   >
-    <!-- Liste des conversations -->
     <div v-if="!isMobile || (isMobile && !inConversationView)" class="left-pane">
       <h2 class="titrePage">Conversations</h2>
       <div class="contacts">
@@ -48,7 +47,6 @@
       />
     </div>
 
-    <!-- Conversation sélectionnée -->
     <div v-if="!isMobile || (isMobile && inConversationView)" class="right-pane">
       <button v-if="isMobile" class="back-button" @click="backToList">← Retour</button>
 
@@ -85,7 +83,7 @@ const showNewConversation = ref(false)
 const isMobile = ref(window.innerWidth <= 768)
 const inConversationView = ref(false)
 
-const myPublicKey = ref('') // votre clé
+const myPublicKey = ref('')
 
 let ws = null
 
@@ -144,14 +142,11 @@ function createConversation(contactInfo) {
 onMounted(async () => {
   window.addEventListener('resize', handleResize)
 
-  // 1) fetch la liste des peers (Alice & Bob)
   try {
     const res = await fetch('http://localhost:49369/get_peers')
     const { peers } = await res.json()
 
-    // on détermine qu’on est Alice
     const me = peers[0].public_key
-    // on bâtit les conversations pour tous les AUTRES peers
     peers
       .filter((p) => p.public_key !== me)
       .forEach((p) => {
@@ -165,27 +160,22 @@ onMounted(async () => {
         })
       })
 
-    // 2) ouvre la WS en tant qu’Alice
     ws = new WebSocket(`ws://localhost:49369/?peer_key=${encodeURIComponent(me)}`)
 
     ws.onmessage = (evt) => {
       console.log('Message reçu:', evt)
       const msg = JSON.parse(evt.data)
-      // msg : { from, to, content, timestamp }
-      // on trouve la conversation correspondante
-      // - si msg.from === conv.id, c’est un message **entrant** dans cette bulle
-      // - si msg.to   === conv.id,    c’est un message **sortant**
+
       conversations.forEach((conv) => {
         if (msg.from === conv.id || msg.to === conv.id) {
           conv.messages.push({
             id: `${msg.timestamp}-${Math.random()}`,
             text: msg.content,
             self:
-              msg.to === conv.id // si c’est à moi (destinataire), self=false
+              msg.to === conv.id
                 ? false
-                : true, // si à un autre (Bob), self=true
+                : true,
           })
-          // on met à jour l’aperçu
           conv.lastMessage = msg.content
           conv.lastTime = new Date(msg.timestamp).toLocaleTimeString([], {
             hour: '2-digit',

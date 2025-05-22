@@ -25,10 +25,8 @@ onBeforeUnmount(() => {
 
 <template>
   <div class="app-container">
-    <!-- Overlay sombre quand le menu mobile est ouvert -->
     <div v-if="isMobile && showMobileMenu" class="overlay" @click="toggleMobileMenu"></div>
 
-    <!-- Sidebar mobile -->
     <aside class="sidebar" :class="{ open: isMobile && showMobileMenu }">
       <nav class="sidebar-nav">
         <RouterLink to="/" @click="toggleMobileMenu">Chat</RouterLink>
@@ -37,7 +35,6 @@ onBeforeUnmount(() => {
       </nav>
     </aside>
 
-    <!-- Contenu principal -->
     <div class="main-column">
       <header class="main-header">
         <button v-if="isMobile" class="burger-btn" @click="toggleMobileMenu" aria-label="Menu">
@@ -67,7 +64,6 @@ onBeforeUnmount(() => {
   overflow: hidden;
 }
 
-/* Overlay foncé */
 .overlay {
   position: fixed;
   top: 0;
@@ -78,7 +74,6 @@ onBeforeUnmount(() => {
   z-index: 29;
 }
 
-/* Sidebar mobile */
 .sidebar {
   position: fixed;
   top: 50px;
@@ -113,14 +108,11 @@ onBeforeUnmount(() => {
   text-decoration-style: solid;
 }
 
-/* Contenu principal */
 .main-column {
   flex: 1;
   display: flex;
   flex-direction: column;
 }
-
-/* En-tête */
 .main-header {
   display: flex;
   align-items: center;
@@ -159,7 +151,6 @@ onBeforeUnmount(() => {
   width: 100%;
 }
 
-/* Burger & close icons */
 .burger-btn {
   background: none;
   border: none;
@@ -177,14 +168,12 @@ onBeforeUnmount(() => {
   line-height: 1;
 }
 
-/* Zone de contenu */
 .content-area {
   flex: 1;
   overflow-y: auto;
   background-color: #f5f5f5;
 }
 
-/* Affichage desktop */
 @media (min-width: 769px) {
   .overlay,
   .sidebar {

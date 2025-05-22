@@ -15,11 +15,6 @@ pub struct MessagePayload {
     pub message: String,
 }
 
-#[derive(Deserialize)]
-pub struct GetMessagesQuery {
-    pub public_key: String,
-}
-
 #[derive(Serialize)]
 struct PeersResponse {
     peers: Vec<Peer>,

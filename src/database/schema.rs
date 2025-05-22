@@ -1,8 +1,7 @@
 // @generated automatically by Diesel CLI.
 
 diesel::table! {
-    messages (id) {
-        id -> Integer,
+    messages (sender_public_key) {
         sender_public_key -> Text,
         receiver_public_key -> Text,
         message -> Text,
