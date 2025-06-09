@@ -6,15 +6,40 @@ use crate::database::db_setup::DbPool;
 use crate::database::message::{insert_message, get_messages_for_peer};
 use crate::api::hub::{Connect, Disconnect, ForwardMessage};
 
+
+#[derive(Deserialize)]
+struct ClientMessage {
+    to: String,
+    content: String,
+}
+
+impl Drop for ClientMessage {
+    fn drop(&mut self) {
+        log::warn!("ClientMessage est en cours de drop (!)");
+    }
+}
+
 /// Message envoyée du Hub vers la session
 #[derive(actix::Message)]
 #[rtype(result = "()")] 
 pub struct ServerMessage(pub String);
 
+impl Drop for ServerMessage {
+    fn drop(&mut self) {
+        log::warn!("ServerMessage est en cours de drop (!)");
+    }
+}
+
 pub struct WsSession {
     pub peer_key: String,
     pub hub: Addr<crate::api::hub::Hub>,
     pub pool: DbPool,
+}
+
+impl Drop for WsSession {
+    fn drop(&mut self) {
+        log::warn!("WsSession est en cours de drop (!)");
+    }
 }
 
 impl Actor for WsSession {
@@ -41,12 +66,6 @@ impl Actor for WsSession {
             peer_key: self.peer_key.clone(),
         });
     }
-}
-
-#[derive(Deserialize)]
-struct ClientMessage {
-    to: String,
-    content: String,
 }
 
 impl StreamHandler<Result<ws::Message, ws::ProtocolError>> for WsSession {
@@ -81,7 +100,7 @@ impl Handler<ServerMessage> for WsSession {
     type Result = ();
 
     fn handle(&mut self, msg: ServerMessage, ctx: &mut Self::Context) {
-        ctx.text(msg.0);
+        ctx.text(msg.0.clone());
     }
 }
 

@@ -7,26 +7,52 @@ license = "LGPL-2"
 repository = "https://github.com/loouis-t/WireChat"
 edition = "2024"
 
-[dependencies]
-tokio = { version = "1", features = ["full"] }
 
+[dependencies]
 actix = "0.13"
 actix-web = "4"
 actix-web-actors = "4"
 
+android_logger = "0.13"
+
+anyhow = "1"
+
+base64 = "0.22.1"
+
+chrono = { version = "0.4", features = ["serde"] }
+
+diesel = { version = "2.2.10", features = ["sqlite", "chrono", "r2d2"] }
+
+dotenv = "0.15.0"
+
+futures = "0.3.31"
+
+jni = "0.21"
+
+libsqlite3-sys = { version = "0.26", features = ["bundled"] }
+
+log = "0.4"
+
+onetun = "0.3.10"
+
+r2d2 = "0.8"
+
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
 
-base64 = "0.22.1"
-dotenv = "0.15.0"
+tokio = { version = "1", features = ["full"] }
 
-diesel = { version = "2.2.10", features = ["sqlite", "chrono", "r2d2"] }
-r2d2 = "0.8"
-chrono = { version = "0.4", features = ["serde"] }
-onetun = "0.3.10"
-futures = "0.3.31"
+x25519-dalek = "=2.0.0-rc.3"
+
+
+[lib]
+crate-type = ["cdylib"]
+name = "wirechat_backend"
+path = "src/lib.rs"
 
 
 [profile.release]
+# À commenter ou non en fonction de ce que l'on souhaite faire
+debug = true
 # Tell `rustc` to optimize for small code size.
 opt-level = "s"

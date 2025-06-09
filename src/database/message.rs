@@ -6,7 +6,9 @@ use diesel::{
 use chrono::NaiveDateTime;
 use crate::database::schema::messages;
 
+
 // Struct correspondant à une ligne dans la table "messages"
+#[allow(dead_code)]
 #[derive(Queryable)]
 pub struct Message {
     pub id: Option<i32>,
@@ -16,7 +18,14 @@ pub struct Message {
     pub timestamp: Option<NaiveDateTime>,
 }
 
+impl Drop for Message {
+    fn drop(&mut self) {
+        log::warn!("Message est en cours de drop (!)");
+    }
+}
+
 // Struct utilisée pour insérer un nouveau message dans la table
+#[allow(dead_code)]
 #[derive(Insertable)]
 #[diesel(table_name = messages)]
 pub struct NewMessage<'a> {
@@ -24,6 +33,12 @@ pub struct NewMessage<'a> {
     pub receiver_public_key: &'a str,
     pub message: &'a str,
     pub timestamp: Option<NaiveDateTime>,
+}
+
+impl<'a> Drop for NewMessage<'a> {
+    fn drop(&mut self) {
+        log::warn!("NewMessage<'a> est en cours de drop (!)");
+    }
 }
 
 // Fonction d'insertion dans la base
@@ -60,6 +75,7 @@ pub fn get_messages_for_peer(
         .load::<Message>(conn)
 }
 
+#[allow(dead_code)]
 pub fn send_message(
     conn: &mut SqliteConnection,
     sender_public_key: &str,
@@ -79,12 +95,14 @@ pub fn send_message(
 }
 
 // Function to delete a message by ID
+#[allow(dead_code)]
 pub fn delete_message_by_id(conn: &mut SqliteConnection, message_id: i32) -> QueryResult<usize> {
     diesel::delete(messages::table.filter(messages::id.eq(message_id)))
         .execute(conn)
 }
 
 // Function to delete all messages for a specific peer
+#[allow(dead_code)]
 pub fn delete_messages_for_peer(
     conn: &mut SqliteConnection,
     public_key: &str,

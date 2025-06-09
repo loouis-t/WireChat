@@ -8,6 +8,7 @@ use diesel::SqliteConnection;
 
 pub type DbPool = Pool<ConnectionManager<SqliteConnection>>;
 
+#[allow(dead_code)]
 pub fn establish_pool(database_url: &str) -> DbPool {
     let manager = ConnectionManager::<SqliteConnection>::new(database_url);
     Pool::builder()

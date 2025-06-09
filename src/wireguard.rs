@@ -1,65 +1,76 @@
-use std::net::{
-    Ipv4Addr,
-    SocketAddr,
-    SocketAddrV4,
-};
-use std::sync::Arc;
 use base64::{engine::general_purpose::STANDARD, Engine as _};
-use onetun::config::{
-    Config,
-    PortForwardConfig,
-    PublicKey,
-    StaticSecret,
-};
+use onetun::config::{Config, PortForwardConfig, PublicKey, StaticSecret};
+use std::net::{Ipv4Addr, SocketAddr, SocketAddrV4, IpAddr};
+use std::sync::Arc;
+
 
 #[derive(Debug)]
 pub struct LocalConfig {
-    private_key: String,
-    public_key: String,
     endpoint: String,
     peer_ip: String,
+    private_key: String,
+    public_key: String,
+    source_peer_ip: IpAddr,
+}
+
+impl Drop for LocalConfig {
+    fn drop(&mut self) {
+        log::warn!("LocalConfig est en cours de drop (!)");
+    }
 }
 
 impl From<LocalConfig> for Config {
     fn from(config: LocalConfig) -> Self {
         let (port_forwards, remote_port_forwards) =
             parse_both_port_forwards(config.peer_ip.as_str()).unwrap();
+
+        let endpoint_addr = match config.endpoint.parse::<SocketAddr>() {
+            Ok(addr) => addr,
+            Err(e) => {
+                eprintln!("'peer_endpoint' invalide : '{}'", config.endpoint);
+                eprintln!("Detail de l’erreur : {}", e);
+                std::process::exit(1);
+            }
+        };
+
         Config {
-            port_forwards,
-            remote_port_forwards,
-            private_key: Arc::new(StaticSecret::from(bytes_from_base64(config.private_key.as_str()))),
+            endpoint_addr,
+            endpoint_bind_addr: SocketAddr::V4(SocketAddrV4::new(Ipv4Addr::UNSPECIFIED, 0)),
             endpoint_public_key: Arc::new(PublicKey::from(bytes_from_base64(config.public_key.as_str()))),
-            preshared_key: None,
-            endpoint_addr: SocketAddr::V4(
-                SocketAddrV4::new(Ipv4Addr::new(83, 193, 121, 193), 51822)
-            ),
-            endpoint_bind_addr: SocketAddr::V4(
-                SocketAddrV4::new(Ipv4Addr::new(0, 0, 0, 0), 0)
-            ),
-            source_peer_ip: std::net::IpAddr::V4(Ipv4Addr::new(10, 12, 17, 8)),
             keepalive_seconds: Some(21),
-            max_transmission_unit: 1280,
             log: "".to_string(),
-            warnings: vec![],
+            max_transmission_unit: 1280,
             pcap_file: None,
+            port_forwards,
+            preshared_key: None,
+            private_key: Arc::new(StaticSecret::from(bytes_from_base64(config.private_key.as_str()))),
+            remote_port_forwards,
+            source_peer_ip: config.source_peer_ip,
+            warnings: vec![],
         }
     }
 }
 
 impl LocalConfig {
     pub fn new(private_key: &str, public_key: &str, endpoint: &str, peer_ip: &str) -> Self {
+        let source_peer_ip = std::env::var("SOURCE_PEER_IP")
+            .ok()
+            .and_then(|ip| ip.parse::<IpAddr>().ok())
+            .unwrap_or(IpAddr::V4(Ipv4Addr::new(10, 12, 17, 8)));
+
         LocalConfig {
-            private_key: private_key.to_string(),
-            public_key: public_key.to_string(),
             endpoint: endpoint.to_string(),
             peer_ip: peer_ip.to_string(),
+            private_key: private_key.to_string(),
+            public_key: public_key.to_string(),
+            source_peer_ip,
         }
     }
 }
 
-
 pub fn bytes_from_base64(key: &str) -> [u8; 32] {
-    let bytes = STANDARD.decode(key).unwrap();
+    let bytes = STANDARD.decode(key)
+        .expect("Cle en base64 invalide : decodage impossible");
     let mut array = [0u8; 32];
     array.copy_from_slice(&bytes);
     array
